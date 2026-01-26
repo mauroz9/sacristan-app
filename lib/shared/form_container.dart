@@ -1,0 +1,110 @@
+import 'package:flutter/material.dart';
+
+class FormContainer extends StatelessWidget {
+  const FormContainer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 400,
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+      margin: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        spacing: 20,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 5,
+            children: [
+              Text(
+                "Usuario",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 94, 94, 94),
+                ),
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.person_outline_outlined),
+                  focusColor: Color.fromRGBO(31, 60, 139, 1.0),
+                  filled: true,
+                  fillColor: Colors.grey[200],
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.grey, width: 1),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Color.fromRGBO(31, 60, 139, 1.0), width: 2),
+                  ),
+                  hintText: 'Introduce tu nombre de usuario',
+                ),
+              ),
+            ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 5,
+            children: [
+              Text(
+                "Contraseña",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 94, 94, 94),
+                ),
+              ),
+              TextFormField(
+                obscureText: true,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.lock_outline_rounded),
+                  focusColor: Color.fromRGBO(31, 60, 139, 1.0),
+                  filled: true,
+                  fillColor: Colors.grey[200],
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.grey, width: 1)
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Color.fromRGBO(31, 60, 139, 1.0), width: 2),
+                  ),
+                  hintText: 'Introduce tu contraseña',
+                ),
+              ),
+              Text(
+                "¿Olvidaste tu contraseña?",
+                style: TextStyle(
+                  fontSize: 14,
+                  color:Color.fromRGBO(31, 60, 139, 1.0)
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 50,),
+          ElevatedButton(
+            onPressed: () {},
+            style: ButtonStyle(
+              backgroundColor: WidgetStatePropertyAll(
+                Color.fromRGBO(31, 60, 139, 1.0),
+              ),
+              shape: WidgetStatePropertyAll(
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              minimumSize: WidgetStatePropertyAll(Size(double.infinity, 50)),
+            ),
+            child: Text(
+              "Iniciar Sesión",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          ),
+          SizedBox(height: 100,),
+          Text("¿Necesitas ayuda? Contacta con tu profesor", style: TextStyle(color: Color.fromARGB(255, 94, 94, 94)),)
+        ],
+      ),
+    );
+  }
+}
