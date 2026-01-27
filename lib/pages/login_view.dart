@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pantalla_login_ui/shared/form_container.dart';
 import 'package:pantalla_login_ui/shared/top_logo.dart';
 
-class MainView extends StatelessWidget {
-  const MainView({super.key});
+class LoginView extends StatelessWidget {
+  const LoginView({super.key});
 
   @override
   Widget build(BuildContext context) {
