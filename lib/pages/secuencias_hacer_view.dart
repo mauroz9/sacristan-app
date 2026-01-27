@@ -25,24 +25,21 @@ class SecuenciasHacerView extends StatelessWidget {
             ),
             Expanded(
             flex: 8, 
-            child: Container(
-              color: Colors.red,
-              child: Center(
-                child: SizedBox(
-                  height: 450,
-                  child: ListView(
-                    clipBehavior: Clip.none,
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      SequenceCard(title: "Lavado de manos", time: "08:45", idImagen: "8975"),
-                      SizedBox(width: 20),
-                      SequenceCard(title: "Lavado de manos", time: "08:45", idImagen: "8975"),
-                      SizedBox(width: 20),
-                      SequenceCard(title: "Lavado de manos", time: "08:45", idImagen: "8975"),
-                      SizedBox(width: 20),
-                      SequenceCard(title: "Lavado de manos", time: "08:45", idImagen: "8975"),
-                    ],
-                  ),
+            child: Center(
+              child: SizedBox(
+                height: 450,
+                child: ListView(
+                  clipBehavior: Clip.none,
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    SequenceCard(title: "Lavado de manos", time: "08:45", idImagen: "8975"),
+                    SizedBox(width: 20),
+                    SequenceCard(title: "Lavado de manos", time: "08:45", idImagen: "8975"),
+                    SizedBox(width: 20),
+                    SequenceCard(title: "Lavado de manos", time: "08:45", idImagen: "8975"),
+                    SizedBox(width: 20),
+                    SequenceCard(title: "Lavado de manos", time: "08:45", idImagen: "8975"),
+                  ],
                 ),
               ),
             )
