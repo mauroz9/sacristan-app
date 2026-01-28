@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pantalla_login_ui/pages/secuencias_hacer_view.dart';
+import 'package:pantalla_login_ui/shared/custom_bottom_navigation_bar_item.dart';
 
 class MainView extends StatefulWidget {
   const MainView({super.key});
@@ -9,6 +10,7 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
+  
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
@@ -25,7 +27,10 @@ class _MainViewState extends State<MainView> {
           gradient: LinearGradient(
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
-            colors: [Color.fromARGB(255, 238, 246, 255), Color.fromARGB(255, 238, 242, 255)],
+            colors: [
+              Color.fromARGB(255, 238, 246, 255),
+              Color.fromARGB(255, 238, 242, 255),
+            ],
           ),
         ),
         width: double.infinity,
@@ -39,19 +44,23 @@ class _MainViewState extends State<MainView> {
             _selectedIndex = index;
           });
         },
+        selectedItemColor: Color(0xFF1F3C8B),
 
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            label: "Hoy",
+            activeIcon: CustomBottomNavigationBarItem(active: true, icon: Icon(Icons.home_outlined),label: 'Hoy'),
+            icon: CustomBottomNavigationBarItem(active: false, icon: Icon(Icons.home_outlined),label: 'Hoy'),
+            label: ''
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.local_library_outlined),
-            label: "Biblioteca",
+            activeIcon: CustomBottomNavigationBarItem(active: true, icon: Icon(Icons.local_library_outlined),label: 'Biblioteca'),
+            icon: CustomBottomNavigationBarItem(active: false, icon: Icon(Icons.local_library_outlined),label: 'Biblioteca'),
+            label: ''
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline_rounded),
-            label: "Perfil",
+            activeIcon: CustomBottomNavigationBarItem(active: true, icon: Icon(Icons.person_outline_rounded),label: 'Perfil'),
+            icon: CustomBottomNavigationBarItem(active: false, icon: Icon(Icons.person_outline_rounded),label: 'Perfil'),
+            label: ''
           ),
         ],
       ),

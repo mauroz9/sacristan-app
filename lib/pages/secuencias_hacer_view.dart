@@ -24,10 +24,10 @@ class SecuenciasHacerView extends StatelessWidget {
               ),
             ),
             Expanded(
-            flex: 8, 
+            flex: 9, 
             child: Center(
               child: SizedBox(
-                height: 450,
+                height: 550,
                 child: ListView(
                   clipBehavior: Clip.none,
                   scrollDirection: Axis.horizontal,
