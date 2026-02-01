@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pantalla_login_ui/pages/login_view.dart';
 import 'package:pantalla_login_ui/pages/main_view.dart';
 
 void main() {
@@ -13,10 +14,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        
-      ),
-      home: const MainView(),
+      theme: ThemeData(),
+      initialRoute: '/login',
+      routes: {'/login': (context) => LoginView(), '/home': (context) => MainView()},
     );
   }
 }
