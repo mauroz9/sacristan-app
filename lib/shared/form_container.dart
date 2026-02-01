@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
-class FormContainer extends StatelessWidget {
+class FormContainer extends StatefulWidget {
   const FormContainer({super.key});
 
+  @override
+  State<FormContainer> createState() => _FormContainerState();
+}
+
+class _FormContainerState extends State<FormContainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -86,7 +91,7 @@ class FormContainer extends StatelessWidget {
           ),
           SizedBox(height: 50,),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {Navigator.pushReplacementNamed(context, '/home');},
             style: ButtonStyle(
               backgroundColor: WidgetStatePropertyAll(
                 Color.fromRGBO(31, 60, 139, 1.0),
