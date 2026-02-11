@@ -81,7 +81,7 @@ class SequenceCard extends StatelessWidget {
               child: SizedBox(
                 child: Image.network(
                   "https://api.arasaac.org/v1/pictograms/$idImagen",
-                  fit: BoxFit.contain, // Ajusta la imagen sin deformarla
+                  fit: BoxFit.contain,
                 ),
               ),
             ),            
