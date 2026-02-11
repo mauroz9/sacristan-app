@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pantalla_login_ui/pages/secuencias_hacer_view.dart';
+import 'package:pantalla_login_ui/features/sequences_to_do/ui/secuencias_hacer_view.dart';
 import 'package:pantalla_login_ui/shared/custom_bottom_navigation_bar_item.dart';
 
 class MainView extends StatefulWidget {
