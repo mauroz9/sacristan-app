@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pantalla_login_ui/shared/form_container.dart';
+import 'package:pantalla_login_ui/features/login/ui/personalized_widgets/form_container.dart';
 import 'package:pantalla_login_ui/shared/top_logo.dart';
 
 class LoginView extends StatelessWidget {
