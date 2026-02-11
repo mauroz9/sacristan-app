@@ -34,7 +34,7 @@ class _LibrarySequencesViewState extends State<LibrarySequencesView> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
       itemCount: sequences.length,
       itemBuilder: (context, index) {
         final sequence = sequences[index];
