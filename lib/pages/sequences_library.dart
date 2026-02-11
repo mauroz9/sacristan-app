@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pantalla_login_ui/features/library_sequences/ui/library_sequences_view.dart';
 
 class SequencesLibrary extends StatelessWidget {
   const SequencesLibrary({super.key});
@@ -14,6 +15,9 @@ class SequencesLibrary extends StatelessWidget {
             border: BoxBorder.fromLTRB(bottom: BorderSide(width: 7, color: const Color.fromARGB(255, 240, 200, 56)))
           ),
         ),
+        Expanded(
+          child: LibrarySequencesView(),
+        )
       ],
     );
   }
