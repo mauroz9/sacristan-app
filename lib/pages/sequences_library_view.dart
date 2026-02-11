@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pantalla_login_ui/features/library_sequences/ui/library_sequences_view.dart';
 import 'package:pantalla_login_ui/features/list_categories/ui/widgets/category_card.dart';
 
 class SequencesLibrary extends StatelessWidget {
@@ -20,14 +21,14 @@ class SequencesLibrary extends StatelessWidget {
             ),
           ),
           child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 10,
-                children: [
-                  Text(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: 10,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
                     "Biblioteca de secuencias",
                     style: TextStyle(
                       color: Colors.white,
@@ -35,7 +36,10 @@ class SequencesLibrary extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  TextField(
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: TextField(
                     style: TextStyle(color: Colors.white),
                     decoration: InputDecoration(
                       hintText: "Buscar secuencias...",
@@ -58,28 +62,32 @@ class SequencesLibrary extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 40,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        CategoryCard(title: "Todos", count: 6, isActive: true),
-                        SizedBox(width: 8),
-                        CategoryCard(title: "Higiene y autocuidado", count: 2, isActive: false),
-                        SizedBox(width: 8),
-                        CategoryCard(title: "Actividades en el entorno", count: 2, isActive: false),
-                        SizedBox(width: 8),
-                        CategoryCard(title: "Actividades en el entorno", count: 2, isActive: false),
-                        SizedBox(width: 8),
-                        CategoryCard(title: "Otros", count: 2, isActive: false),
-                      ],
-                    ),
+                ),
+                SizedBox(
+                  height: 40,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      SizedBox(width: 16),
+                      CategoryCard(title: "Todos", count: 6, isActive: true),
+                      SizedBox(width: 8),
+                      CategoryCard(title: "Higiene y autocuidado", count: 2, isActive: false),
+                      SizedBox(width: 8),
+                      CategoryCard(title: "Actividades en el entorno", count: 2, isActive: false),
+                      SizedBox(width: 8),
+                      CategoryCard(title: "Actividades en el entorno", count: 2, isActive: false),
+                      SizedBox(width: 8),
+                      CategoryCard(title: "Otros", count: 2, isActive: false),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
+        Expanded(
+          child: LibrarySequencesView(),
+        )
       ],
     );
   }

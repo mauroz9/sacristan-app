@@ -38,32 +38,37 @@ class _MainViewState extends State<MainView> {
         height: double.infinity,
         child: _pages[_selectedIndex],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: (int index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-        selectedItemColor: Color(0xFF1F3C8B),
-
-        items: [
-          BottomNavigationBarItem(
-            activeIcon: CustomBottomNavigationBarItem(active: true, icon: Icon(Icons.home_outlined),label: 'Hoy'),
-            icon: CustomBottomNavigationBarItem(active: false, icon: Icon(Icons.home_outlined),label: 'Hoy'),
-            label: ''
-          ),
-          BottomNavigationBarItem(
-            activeIcon: CustomBottomNavigationBarItem(active: true, icon: Icon(Icons.local_library_outlined),label: 'Biblioteca'),
-            icon: CustomBottomNavigationBarItem(active: false, icon: Icon(Icons.local_library_outlined),label: 'Biblioteca'),
-            label: ''
-          ),
-          BottomNavigationBarItem(
-            activeIcon: CustomBottomNavigationBarItem(active: true, icon: Icon(Icons.person_outline_rounded),label: 'Perfil'),
-            icon: CustomBottomNavigationBarItem(active: false, icon: Icon(Icons.person_outline_rounded),label: 'Perfil'),
-            label: ''
-          ),
-        ],
+      bottomNavigationBar: SizedBox(
+        height: 110,
+        child: BottomNavigationBar(
+          selectedFontSize: 0,
+          unselectedFontSize: 0,
+          currentIndex: _selectedIndex,
+          onTap: (int index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+          },
+          selectedItemColor: Color(0xFF1F3C8B),
+        
+          items: [
+            BottomNavigationBarItem(
+              activeIcon: CustomBottomNavigationBarItem(active: true, icon: Icon(Icons.home_outlined),label: 'Hoy'),
+              icon: CustomBottomNavigationBarItem(active: false, icon: Icon(Icons.home_outlined),label: 'Hoy'),
+              label: ''
+            ),
+            BottomNavigationBarItem(
+              activeIcon: CustomBottomNavigationBarItem(active: true, icon: Icon(Icons.local_library_outlined),label: 'Biblioteca'),
+              icon: CustomBottomNavigationBarItem(active: false, icon: Icon(Icons.local_library_outlined),label: 'Biblioteca'),
+              label: ''
+            ),
+            BottomNavigationBarItem(
+              activeIcon: CustomBottomNavigationBarItem(active: true, icon: Icon(Icons.person_outline_rounded),label: 'Perfil'),
+              icon: CustomBottomNavigationBarItem(active: false, icon: Icon(Icons.person_outline_rounded),label: 'Perfil'),
+              label: ''
+            ),
+          ],
+        ),
       ),
     );
   }
