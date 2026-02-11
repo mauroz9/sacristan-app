@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pantalla_login_ui/shared/sequence_card.dart';
+import 'package:pantalla_login_ui/features/sequences_to_do/ui/personalized_widget/sequence_card.dart';
 
 class SecuenciasHacerView extends StatelessWidget {
   const SecuenciasHacerView({super.key});
