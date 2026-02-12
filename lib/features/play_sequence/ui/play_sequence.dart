@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pantalla_login_ui/features/play_sequence/ui/widgets/step_square.dart';
 
 class PlaySequencesPage extends StatefulWidget {
   const PlaySequencesPage({super.key});
@@ -8,6 +9,31 @@ class PlaySequencesPage extends StatefulWidget {
 }
 
 class _PlaySequencesPageState extends State<PlaySequencesPage> {
+
+  late PageController _pageController;
+  double _currentPage = 0;
+
+  final List<String> _images = ["8975", "8976", "8977", "8978", "8979"];
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(
+      initialPage: 0,
+      viewportFraction: 0.4, // Adjust this to change spacing between steps
+    )..addListener(() {
+        setState(() {
+          _currentPage = _pageController.page!;
+        });
+      });
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -25,7 +51,44 @@ class _PlaySequencesPageState extends State<PlaySequencesPage> {
           ),
         ),
         Expanded(
-          child: Container() 
+          child: Column(
+            children: [
+              Container(
+                height: 470,
+                color: Colors.black,
+              ),
+              SizedBox(height: 30),
+              SizedBox(
+                height: 90,
+                child: PageView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  controller: _pageController,
+                  itemCount: _images.length,
+                  itemBuilder: (context, index) {
+                    double relativePostion = index -_currentPage;
+                    double scale = (1 - (relativePostion.abs() * 0.2)).clamp(0.8, 1.0);
+                    double opacity = 1;
+
+                    if (relativePostion < -0.5) {
+                      opacity = 0.4;
+                    } else if (relativePostion <= 0.5){
+                      opacity = 1;
+                    }
+
+                    return Center(
+                        child: StepSquare(
+                          stepPosition: index + 1,
+                          imageId: _images[index],
+                          scale: scale,
+                          opacity: opacity,
+                        ),
+                      );
+
+                  },
+                ),
+              )
+            ],
+          ) 
         ),
         Container(
           color: Colors.white,
