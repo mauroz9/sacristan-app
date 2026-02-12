@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pantalla_login_ui/features/play_sequence/ui/widgets/header_info.dart';
 
 class PlaySequencesPage extends StatefulWidget {
   const PlaySequencesPage({super.key});
@@ -23,6 +24,10 @@ class _PlaySequencesPageState extends State<PlaySequencesPage> {
               ),
             ),
           ),
+          child: SafeArea(child: Padding(
+            padding: const EdgeInsets.only(top: 10, right: 15, left: 15, bottom: 0),
+            child: HeaderInfo(totalSteps: 5, currentStep: 1, title: "Lavado de Manos",),
+          )),
         ),
         Expanded(
           child: Container() 
