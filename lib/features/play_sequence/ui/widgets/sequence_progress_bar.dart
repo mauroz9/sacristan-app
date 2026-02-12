@@ -12,7 +12,9 @@ class SequenceProgressBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final progress = currentStep / totalSteps;
+     final bool hasValidTotalSteps = totalSteps > 0;
+     final double progress =
+        hasValidTotalSteps ? currentStep / totalSteps : 0.0;
 
     return TweenAnimationBuilder<double>(
       duration: const Duration(milliseconds: 500),

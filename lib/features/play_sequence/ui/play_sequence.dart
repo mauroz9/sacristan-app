@@ -26,7 +26,7 @@ class _PlaySequencesPageState extends State<PlaySequencesPage> {
           ),
           child: SafeArea(child: Padding(
             padding: const EdgeInsets.only(top: 10, right: 15, left: 15, bottom: 0),
-            child: HeaderInfo(totalSteps: 5, currentStep: 1, title: "Lavado de Manos",),
+            child: HeaderInfo(totalSteps: 5, currentStep: 2, title: "Lavado de Manos",),
           )),
         ),
         Expanded(

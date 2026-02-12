@@ -15,8 +15,10 @@ class HeaderInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final percentage = ((currentStep / totalSteps) * 100).round();
-    final progress = currentStep / totalSteps;
+    final bool hasValidTotalSteps = totalSteps > 0;
+    final int percentage = hasValidTotalSteps
+        ? ((currentStep / totalSteps) * 100).round()
+        : 0;
 
     return Container(
       child: Column(
