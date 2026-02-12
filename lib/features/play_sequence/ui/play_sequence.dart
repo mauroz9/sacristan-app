@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:pantalla_login_ui/features/play_sequence/ui/widgets/header_info.dart';
 
-class PlaySequencesPage extends StatefulWidget {
-  const PlaySequencesPage({super.key});
+class PlaySequencePage extends StatefulWidget {
+  const PlaySequencePage({super.key});
 
   @override
-  State<PlaySequencesPage> createState() => _PlaySequencesPageState();
+  State<PlaySequencePage> createState() => _PlaySequencePageState();
 }
 
-class _PlaySequencesPageState extends State<PlaySequencesPage> {
+class _PlaySequencePageState extends State<PlaySequencePage> {
   @override
   Widget build(BuildContext context) {
     return Column(
