@@ -23,21 +23,16 @@ class ProfileView extends StatelessWidget {
           ),
           child: SafeArea(child: ProfileInfo()),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [TeacherInfo()],
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [StudentPunctuation(), TeacherInfo()],
+            ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-          child: Column(
-            children: [
-              StudentPunctuation()
-            ],
-          ),
-        )
       ],
     );
   }
