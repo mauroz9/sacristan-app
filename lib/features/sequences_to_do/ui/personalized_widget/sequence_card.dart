@@ -99,7 +99,7 @@ class SequenceCard extends StatelessWidget {
               ),
             ),
             Expanded(
-              flex: 1 ,
+              flex: 1,
               child: ElevatedButton(
               onPressed: () {Navigator.pushNamed(context, '/play');},
               style: ButtonStyle(

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pantalla_login_ui/features/play_sequence/ui/play_sequence.dart';
 
-class PlaySequencesView extends StatelessWidget {
-  const PlaySequencesView({super.key});
+class PlaySequenceView extends StatelessWidget {
+  const PlaySequenceView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class PlaySequencesView extends StatelessWidget {
         ),
         width: double.infinity,
         height: double.infinity,
-        child: PlaySequencesPage(),
+        child: PlaySequencePage(),
       ),
     );
   }
