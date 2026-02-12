@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pantalla_login_ui/pages/profile_view.dart';
 import 'package:pantalla_login_ui/pages/sequences_library_view.dart';
 import 'package:pantalla_login_ui/pages/sequences_to_do_view.dart';
 import 'package:pantalla_login_ui/shared/custom_bottom_navigation_bar_item.dart';
@@ -17,7 +18,7 @@ class _MainViewState extends State<MainView> {
   final List<Widget> _pages = [
     const SecuenciasHacerView(),
     const SequencesLibrary(),
-    const Center(child: Text("Perfil")),
+    const ProfileView(),
   ];
 
   @override
