@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:pantalla_login_ui/features/play_sequence/ui/widgets/header_info.dart';
 import 'package:pantalla_login_ui/features/play_sequence/ui/widgets/step_square.dart';
 
-class PlaySequencesPage extends StatefulWidget {
-  const PlaySequencesPage({super.key});
+class PlaySequencePage extends StatefulWidget {
+  const PlaySequencePage({super.key});
 
   @override
-  State<PlaySequencesPage> createState() => _PlaySequencesPageState();
+  State<PlaySequencePage> createState() => _PlaySequencePageState();
 }
 
-class _PlaySequencesPageState extends State<PlaySequencesPage> {
+class _PlaySequencePageState extends State<PlaySequencePage> {
 
   late PageController _pageController;
   double _currentPage = 0;
@@ -49,6 +50,10 @@ class _PlaySequencesPageState extends State<PlaySequencesPage> {
               ),
             ),
           ),
+          child: SafeArea(child: Padding(
+            padding: const EdgeInsets.only(top: 10, right: 15, left: 15, bottom: 0),
+            child: HeaderInfo(totalSteps: 5, currentStep: 2, title: "Lavado de Manos",),
+          )),
         ),
         Expanded(
           child: Column(
