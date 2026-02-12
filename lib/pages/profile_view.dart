@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pantalla_login_ui/features/profile_info/ui/profile_info.dart';
 import 'package:pantalla_login_ui/features/techer_info/ui/teacher_info.dart';
+import 'package:pantalla_login_ui/features/student_punctuation/ui/student_punctuation.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -29,6 +30,14 @@ class ProfileView extends StatelessWidget {
             children: [TeacherInfo()],
           ),
         ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+          child: Column(
+            children: [
+              StudentPunctuation()
+            ],
+          ),
+        )
       ],
     );
   }
