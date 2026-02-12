@@ -99,36 +99,33 @@ class SequenceCard extends StatelessWidget {
               ),
             ),
             Expanded(
-              flex: 1 ,
-              child: Container(
-                width: double.infinity,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1F3C8B),
-                  borderRadius: BorderRadius.circular(20),
+              flex: 1,
+              child: ElevatedButton(
+              onPressed: () {Navigator.pushNamed(context, '/play');},
+              style: ButtonStyle(
+                backgroundColor: WidgetStatePropertyAll(
+                  const Color(0xFF1F3C8B),
                 ),
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.play_arrow_outlined,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      SizedBox(width: 10),
-                      Text(
-                        "Iniciar ahora",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ],
-                  )
+                shape: WidgetStatePropertyAll(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
+                minimumSize: WidgetStatePropertyAll(Size(double.infinity, 50)),
               ),
+              child: Row(
+                spacing: 5,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(Icons.play_arrow_rounded, color: Colors.white, size: 30),
+                  Text(
+                    "Reproducir",
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                ],
+              ),
+            ),
             )
           ],
         ),

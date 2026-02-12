@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pantalla_login_ui/pages/login_view.dart';
 import 'package:pantalla_login_ui/pages/main_view.dart';
+import 'package:pantalla_login_ui/pages/play_sequence_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +17,11 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(),
       initialRoute: '/login',
-      routes: {'/login': (context) => LoginView(), '/home': (context) => MainView()},
+      routes: {
+        '/login': (context) => LoginView(), 
+        '/home': (context) => MainView(), 
+        '/play': (context) => PlaySequenceView()
+      },
     );
   }
 }
