@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pantalla_login_ui/features/play_sequence/ui/widgets/header_info.dart';
+import 'package:pantalla_login_ui/features/play_sequence/ui/widgets/step_card.dart';
 import 'package:pantalla_login_ui/features/play_sequence/ui/widgets/step_square.dart';
 
 class PlaySequencePage extends StatefulWidget {
@@ -12,7 +13,7 @@ class PlaySequencePage extends StatefulWidget {
 class _PlaySequencePageState extends State<PlaySequencePage> {
 
   late PageController _pageController;
-  double _currentPage = 0;
+  int _currentStep = 4;
 
   final List<String> _images = ["8975", "8976", "8977", "8978", "8979"];
 
@@ -24,7 +25,7 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
       viewportFraction: 0.4, // Adjust this to change spacing between steps
     )..addListener(() {
         setState(() {
-          _currentPage = _pageController.page!;
+          _currentStep = _pageController.page!.toInt();
         });
       });
   }
@@ -52,7 +53,7 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
           ),
           child: SafeArea(child: Padding(
             padding: const EdgeInsets.only(top: 10, right: 15, left: 15, bottom: 0),
-            child: HeaderInfo(totalSteps: 5, currentStep: 2, title: "Lavado de Manos",),
+            child: HeaderInfo(totalSteps: _images.length, currentStep: _currentStep + 1 , title: "Lavado de Manos",),
           )),
         ),
         Expanded(
@@ -60,7 +61,7 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
             children: [
               Container(
                 height: 470,
-                color: Colors.black,
+                child: StepCard(stepPosition: _currentStep + 1 ,imageId: _images[_currentStep], stepName: "Nombre paso",),
               ),
               SizedBox(height: 30),
               SizedBox(
@@ -70,7 +71,7 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
                   controller: _pageController,
                   itemCount: _images.length,
                   itemBuilder: (context, index) {
-                    double relativePostion = index -_currentPage;
+                    int relativePostion = index -_currentStep;
                     double scale = (1 - (relativePostion.abs() * 0.2)).clamp(0.8, 1.0);
                     double opacity = 1;
 
