@@ -13,7 +13,7 @@ class PlaySequencePage extends StatefulWidget {
 class _PlaySequencePageState extends State<PlaySequencePage> {
 
   late PageController _pageController;
-  int _currentStep = 4;
+  int _currentStep = 0;
 
   final List<String> _images = ["8975", "8976", "8977", "8978", "8979"];
 
