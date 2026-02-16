@@ -52,7 +52,7 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
           ),
           child: SafeArea(child: Padding(
             padding: const EdgeInsets.only(top: 10, right: 15, left: 15, bottom: 0),
-            child: HeaderInfo(totalSteps: _images.length, currentStep: _currentStep, title: "Lavado de Manos",),
+            child: HeaderInfo(totalSteps: _images.length, currentStep: _currentStep+1, title: "Lavado de Manos",),
           )),
         ),
         Expanded(
@@ -98,6 +98,74 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
         Container(
           color: Colors.white,
           height: 110,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+                Container(
+                  height: 60,
+                  width: 170,
+                  decoration: BoxDecoration(
+                    color: _currentStep == 0 ? const Color(0xFFFFFFFF) : const Color(0xFF1F3C8B),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: const Color(0xFFD1D5DC), 
+                      width: 2
+                      )
+                  ),
+                  child: ElevatedButton(
+                    onPressed: _currentStep == 0 ? null : () {
+                      if (_currentStep > 0) {
+                        _pageController.previousPage(duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+                      }
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: WidgetStatePropertyAll(Colors.transparent), 
+                      shadowColor: WidgetStatePropertyAll(Colors.transparent),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                          Icon(Icons.arrow_back_ios, 
+                          color: _currentStep == 0 ? Color.fromARGB(255, 140, 156, 180) : Colors.white
+                          , size: 18, fontWeight: FontWeight.bold,),
+                          SizedBox(width: 5),
+                          Text("Anterior", style: TextStyle(color: _currentStep == 0 ? Color.fromARGB(255, 140, 156, 180) : Colors.white, fontSize: 20, fontWeight: FontWeight.bold))
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 60,
+                  width: 170,
+                  decoration: BoxDecoration(
+                    color: _currentStep == _images.length - 1 ? const Color(0xFFFFFFFF) : const Color(0xFF1F3C8B),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: const Color(0xFFD1D5DC), width: 2)
+                  ),
+                  child: ElevatedButton(
+                    onPressed: _currentStep == _images.length - 1 ? null : () {
+                      if (_currentStep < _images.length - 1) {
+                        _pageController.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+                      }
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: WidgetStatePropertyAll(Colors.transparent), 
+                      shadowColor: WidgetStatePropertyAll(Colors.transparent),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                          Text("Siguiente", style: TextStyle(color: _currentStep == _images.length - 1 ? Color.fromARGB(255, 140, 156, 180) : Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                          SizedBox(width: 5),
+                            Icon(Icons.arrow_forward_ios,
+                            color: _currentStep == _images.length - 1 ? Color.fromARGB(255, 140, 156, 180) : Colors.white,
+                            size: 18, fontWeight: FontWeight.bold,)
+                      ],
+                    ),
+                  ),
+                ),
+            ],
+          ),
         )
       ],
     );
