@@ -79,7 +79,9 @@ class _ProfileInfoState extends State<ProfileInfo> {
                 width: 30,
                 height: 30,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, "/login");
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1F3C8B),
                     padding: EdgeInsets
