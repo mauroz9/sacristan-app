@@ -19,7 +19,7 @@ class AuthException implements Exception {
 class AuthService implements IAuthService {
 
   
-  final String _baseUrl = '${TokenStorage.baseUrl}/auth';
+  final String _baseUrl = TokenStorage.baseUrl;
 
 
   @override
@@ -44,7 +44,7 @@ class AuthService implements IAuthService {
     } else if (response.statusCode == 401) {
       throw const AuthException("Credenciales incorrectas. Verifica tu email y contraseña.");
     }else if (response.statusCode == 403) {
-      throw const AuthException("Tu cuenta ha sido bloqueada. Contacta al soporte.");
+      throw const AuthException("No tienes permisos para acceder a este recurso.");
     } else if (response.statusCode == 400) {
       throw const AuthException("Datos de inicio de sesión inválidos.");
     } else {
