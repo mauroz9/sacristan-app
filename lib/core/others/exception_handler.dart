@@ -1,6 +1,10 @@
 class ExceptionHandler {
 
   static void handle(int statusCode) {
+
+    if (statusCode >= 200 && statusCode < 300) {
+      return; // Respuesta exitosa, no se lanza ninguna excepción
+    }
     
     switch (statusCode) {
       case 400:

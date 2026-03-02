@@ -15,15 +15,32 @@ class _ListCategoriesViewState extends State<ListCategoriesView> {
       'title': 'Misa Dominical',
       'count': 12,
       'isActive': true,
-    }
+    },
+    {
+      'title': 'Misa Dominical',
+      'count': 12,
+      'isActive': false,
+    },
+    {
+      'title': 'Misa Dominical',
+      'count': 12,
+      'isActive': false,
+    },
+    {
+      'title': 'Misa Dominical',
+      'count': 12,
+      'isActive': false,
+    },
   ];
 
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+    return ListView.separated(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      scrollDirection: Axis.horizontal,
       itemCount: categories.length,
+      separatorBuilder: (context, index) => const SizedBox(width: 10),
       itemBuilder: (context, index) {
         final category = categories[index];
         return Padding(

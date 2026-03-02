@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pantalla_login_ui/features/library_sequences/ui/library_sequences_view.dart';
 import 'package:pantalla_login_ui/features/list_categories/ui/list_categories_view.dart';
-import 'package:pantalla_login_ui/features/list_categories/ui/widgets/category_card.dart';
 
 class SequencesLibrary extends StatelessWidget {
   const SequencesLibrary({super.key});
@@ -65,7 +64,7 @@ class SequencesLibrary extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 40,
+                  height: 50,
                   child: ListCategoriesView(),
                 ),
               ],
