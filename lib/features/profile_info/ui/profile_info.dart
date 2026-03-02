@@ -42,34 +42,6 @@ class _ProfileInfoState extends State<ProfileInfo> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Container(
-                decoration: BoxDecoration(
-                  color: const Color(0xFF4C63A2),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 40,
-                    vertical: 3,
-                  ),
-                  child: Row(
-                    spacing: 5,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(Icons.class_outlined, color: Colors.white, size: 16),
-                      Text(
-                        "Clase 2",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
             ],
           ),
           Expanded(

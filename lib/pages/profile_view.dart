@@ -21,7 +21,7 @@ class ProfileView extends StatelessWidget {
               ),
             ),
           ),
-          child: SafeArea(child: ProfileInfo()),
+          child: SafeArea(minimum: EdgeInsets.only(top: 70), child: ProfileInfo()),
         ),
         Expanded(
           child: Padding(
