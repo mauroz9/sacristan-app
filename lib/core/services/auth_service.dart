@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
@@ -15,12 +14,8 @@ class AuthException implements Exception {
   String toString() => message;
 }
 
-
 class AuthService implements IAuthService {
-
-  
   final String _baseUrl = TokenStorage.baseUrl;
-
 
   @override
   Future<LoginResponse> login(LoginRequest request) async {
@@ -33,7 +28,9 @@ class AuthService implements IAuthService {
         body: jsonEncode(request.toJson()),
       );
     } on SocketException {
-      throw const AuthException("No se pudo conectar al servidor. Verifica tu conexión.");
+      throw const AuthException(
+        "No se pudo conectar al servidor. Verifica tu conexión.",
+      );
     } catch (e) {
       throw const AuthException("Error de conexión inesperado.");
     }
@@ -42,13 +39,19 @@ class AuthService implements IAuthService {
       final Map<String, dynamic> body = jsonDecode(response.body);
       return LoginResponse.fromJson(body);
     } else if (response.statusCode == 401) {
-      throw const AuthException("Credenciales incorrectas. Verifica tu email y contraseña.");
-    }else if (response.statusCode == 403) {
-      throw const AuthException("No tienes permisos para acceder a este recurso.");
+      throw const AuthException(
+        "Credenciales incorrectas. Verifica tu email y contraseña.",
+      );
+    } else if (response.statusCode == 403) {
+      throw const AuthException(
+        "No tienes permisos para acceder a este recurso.",
+      );
     } else if (response.statusCode == 400) {
       throw const AuthException("Datos de inicio de sesión inválidos.");
     } else {
-      throw AuthException("Error del servidor (${response.statusCode}). Intenta más tarde.");
+      throw AuthException(
+        "Error del servidor (${response.statusCode}). Intenta más tarde.",
+      );
     }
   }
 
@@ -68,10 +71,12 @@ class AuthService implements IAuthService {
         );
 
         if (response.statusCode != 200) {
-          print("Aviso: El backend devolvió ${response.statusCode} al cerrar sesión.");
+          throw AuthException(
+            "Error al cerrar sesión (${response.statusCode}).",
+          );
         }
       } catch (e) {
-        print("Error de red al intentar hacer logout en el backend: $e");
+        throw AuthException("Error de conexión al cerrar sesión.");
       }
     }
 
