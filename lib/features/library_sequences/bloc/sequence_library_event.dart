@@ -5,6 +5,7 @@ sealed class SequenceLibraryEvent {}
 
 final class FetchSequences extends SequenceLibraryEvent {
   final int? categoryId;
+  final String? searchQuery;
 
-  FetchSequences({this.categoryId});
+  FetchSequences({this.categoryId, this.searchQuery});
 }
