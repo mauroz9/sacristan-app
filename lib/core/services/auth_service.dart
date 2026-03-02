@@ -55,6 +55,26 @@ class AuthService implements IAuthService {
   @override
   Future<void> logout() async {
     final storage = TokenStorage();
+    final token = await storage.getToken();
+
+    if (token != null) {
+      try {
+        final response = await http.post(
+          Uri.parse("$_baseUrl/logout"),
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer $token",
+          },
+        );
+
+        if (response.statusCode != 200) {
+          print("Aviso: El backend devolvió ${response.statusCode} al cerrar sesión.");
+        }
+      } catch (e) {
+        print("Error de red al intentar hacer logout en el backend: $e");
+      }
+    }
+
     await storage.deleteToken();
   }
 }

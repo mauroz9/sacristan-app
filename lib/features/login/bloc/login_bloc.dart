@@ -24,6 +24,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
         final storage = TokenStorage();
         await storage.saveToken(response.token);
+        print(response.token);
+
+        if(!response.roles.contains('STUDENT')){
+          emit(LoginError(message: "Acceso denegado: Esta aplicación es solo para alumnos."));
+          authService.logout();
+          return;
+        }
 
         emit(LoginSuccess(response: response));
       }on AuthException catch (e){
