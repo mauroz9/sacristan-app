@@ -106,7 +106,7 @@ class _FormContainerState extends State<FormContainer> {
               style: TextStyle(color: Colors.white, fontSize: 20),
             ),
           ),
-          SizedBox(height: 100,),
+          SizedBox(height: 50,),
           Text("¿Necesitas ayuda? Contacta con tu profesor", style: TextStyle(color: Color.fromARGB(255, 94, 94, 94)),)
         ],
       ),

@@ -16,7 +16,7 @@ class SecuenciasHacerView extends StatelessWidget {
               child: Text(
                 "Secuencias por hacer",
                 style: TextStyle(
-                  fontSize: 60,
+                  fontSize: 50,
                   fontWeight: FontWeight.w600,
                   color: const Color(0xFF1F3C8B),
                   height: 0,

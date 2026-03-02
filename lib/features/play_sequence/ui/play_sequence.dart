@@ -39,6 +39,7 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      spacing: 10,
       children: [
         Container(
           height: 205,
@@ -59,11 +60,10 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
         Expanded(
           child: Column(
             children: [
-              Container(
-                height: 470,
+              Expanded(
+                flex: 7,
                 child: StepCard(stepPosition: _currentStep + 1 ,imageId: _images[_currentStep], stepName: "Nombre paso",),
               ),
-              SizedBox(height: 30),
               SizedBox(
                 height: 90,
                 child: PageView.builder(
@@ -96,6 +96,7 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
             ],
           ) 
         ),
+    
         Container(
           color: Colors.white,
           height: 110,
