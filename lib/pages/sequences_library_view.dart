@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pantalla_login_ui/features/library_sequences/ui/library_sequences_view.dart';
+import 'package:pantalla_login_ui/features/list_categories/ui/list_categories_view.dart';
 import 'package:pantalla_login_ui/features/list_categories/ui/widgets/category_card.dart';
 
 class SequencesLibrary extends StatelessWidget {
@@ -65,21 +66,7 @@ class SequencesLibrary extends StatelessWidget {
                 ),
                 SizedBox(
                   height: 40,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      SizedBox(width: 16),
-                      CategoryCard(title: "Todos", count: 6, isActive: true),
-                      SizedBox(width: 8),
-                      CategoryCard(title: "Higiene y autocuidado", count: 2, isActive: false),
-                      SizedBox(width: 8),
-                      CategoryCard(title: "Actividades en el entorno", count: 2, isActive: false),
-                      SizedBox(width: 8),
-                      CategoryCard(title: "Actividades en el entorno", count: 2, isActive: false),
-                      SizedBox(width: 8),
-                      CategoryCard(title: "Otros", count: 2, isActive: false),
-                    ],
-                  ),
+                  child: ListCategoriesView(),
                 ),
               ],
             ),

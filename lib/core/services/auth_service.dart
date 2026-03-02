@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:pantalla_login_ui/core/interfaces/auth_interface.dart';
 import 'package:pantalla_login_ui/core/models/login_request_model.dart';
 import 'package:pantalla_login_ui/core/models/login_response_model.dart';
-import 'package:pantalla_login_ui/core/services/token_storage_service.dart';
+import 'package:pantalla_login_ui/core/others/token_storage.dart';
 
 class AuthException implements Exception {
   final String message;

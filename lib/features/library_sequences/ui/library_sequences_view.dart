@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'personalized_widget/library_sequence_card.dart';
+import 'widgets/library_sequence_card.dart';
 
 class LibrarySequencesView extends StatefulWidget {
   const LibrarySequencesView({super.key});
