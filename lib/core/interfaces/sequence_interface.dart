@@ -3,6 +3,6 @@ import 'package:pantalla_login_ui/core/models/page_model.dart';
 
 abstract class ISequenceService {
 
-  Future<Page<LibrarySequenceResponseModel>> getSequences();
+  Future<Page<LibrarySequenceResponseModel>> getSequences([String? categoryId]);
 
 }

@@ -13,13 +13,12 @@ class SequenceService implements ISequenceService {
 
   
   @override
-  Future<Page<LibrarySequenceResponseModel>> getSequences() async {
+  Future<Page<LibrarySequenceResponseModel>> getSequences([String? categoryId]) async {
     final http.Response response;
     final token = await TokenStorage().getToken();
 
     try {
-      
-      response = await http.get(Uri.parse("$_baseUrl/api/v1/student/sequences"), headers: {
+      response = await http.get(Uri.parse("$_baseUrl/api/v1/student/sequences?category=$categoryId"), headers: {
         "Content-Type": "application/json",
         "Authorization": "Bearer $token",
       });
