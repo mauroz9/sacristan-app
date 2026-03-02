@@ -4,7 +4,9 @@ import 'package:pantalla_login_ui/features/list_categories/bloc/list_categories_
 import 'package:pantalla_login_ui/features/list_categories/ui/widgets/category_card.dart';
 
 class ListCategoriesView extends StatelessWidget {
-  const ListCategoriesView({super.key});
+  final void Function(int? categoryId)? onCategorySelected;
+
+  const ListCategoriesView({super.key, this.onCategorySelected});
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +22,19 @@ class ListCategoriesView extends StatelessWidget {
             separatorBuilder: (context, index) => const SizedBox(width: 10),
             itemBuilder: (context, index) {
               final category = state.categories[index];
+              final isActive = state.selectedCategoryId == category.id;
               return Padding(
                 padding: const EdgeInsets.only(bottom: 16.0),
                 child: CategoryCard(
                   title: category.name,
                   count: category.sequenceCount,
-                  isActive: false,
+                  isActive: isActive,
+                  onTap: () {
+                    context.read<ListCategoriesBloc>().add(
+                      SelectCategoryEvent(categoryId: category.id),
+                    );
+                    onCategorySelected?.call(category.id);
+                  },
                 ),
               );
             },

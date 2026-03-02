@@ -16,7 +16,7 @@ class SequenceLibraryBloc
       emit(SequenceLibraryLoading());
 
       try {
-        final page = await _sequenceService.getSequences();
+        final page = await _sequenceService.getSequences(event.categoryId?.toString());
         emit(SequenceLibrarySuccess(sequences: page.content));
       } catch (e) {
         emit(SequenceLibraryError(

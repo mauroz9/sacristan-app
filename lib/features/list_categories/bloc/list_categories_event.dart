@@ -10,3 +10,12 @@ abstract class ListCategoriesEvent extends Equatable {
 class FetchCategoriesEvent extends ListCategoriesEvent {
   const FetchCategoriesEvent();
 }
+
+class SelectCategoryEvent extends ListCategoriesEvent {
+  final int? categoryId;
+
+  const SelectCategoryEvent({this.categoryId});
+
+  @override
+  List<Object?> get props => [categoryId];
+}

@@ -17,11 +17,27 @@ class ListCategoriesLoading extends ListCategoriesState {
 
 class ListCategoriesSuccess extends ListCategoriesState {
   final List<LibraryCategoryResponseModel> categories;
+  final int? selectedCategoryId;
 
-  const ListCategoriesSuccess({required this.categories});
+  const ListCategoriesSuccess({
+    required this.categories,
+    this.selectedCategoryId,
+  });
+
+  ListCategoriesSuccess copyWith({
+    List<LibraryCategoryResponseModel>? categories,
+    int? Function()? selectedCategoryId,
+  }) {
+    return ListCategoriesSuccess(
+      categories: categories ?? this.categories,
+      selectedCategoryId: selectedCategoryId != null
+          ? selectedCategoryId()
+          : this.selectedCategoryId,
+    );
+  }
 
   @override
-  List<Object?> get props => [categories];
+  List<Object?> get props => [categories, selectedCategoryId];
 }
 
 class ListCategoriesError extends ListCategoriesState {

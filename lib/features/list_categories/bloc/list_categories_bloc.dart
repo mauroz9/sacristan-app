@@ -12,6 +12,7 @@ class ListCategoriesBloc extends Bloc<ListCategoriesEvent, ListCategoriesState> 
   ListCategoriesBloc({required this.categoryService})
       : super(const ListCategoriesInitial()) {
     on<FetchCategoriesEvent>(_onFetchCategories);
+    on<SelectCategoryEvent>(_onSelectCategory);
   }
 
   Future<void> _onFetchCategories(
@@ -25,6 +26,18 @@ class ListCategoriesBloc extends Bloc<ListCategoriesEvent, ListCategoriesState> 
       emit(ListCategoriesSuccess(categories: result.content));
     } catch (e) {
       emit(ListCategoriesError(message: e.toString()));
+    }
+  }
+
+  void _onSelectCategory(
+    SelectCategoryEvent event,
+    Emitter<ListCategoriesState> emit,
+  ) {
+    final currentState = state;
+    if (currentState is ListCategoriesSuccess) {
+      emit(currentState.copyWith(
+        selectedCategoryId: () => event.categoryId,
+      ));
     }
   }
 }

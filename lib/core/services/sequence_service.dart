@@ -18,7 +18,10 @@ class SequenceService implements ISequenceService {
     final token = await TokenStorage().getToken();
 
     try {
-      response = await http.get(Uri.parse("$_baseUrl/api/v1/student/sequences?category=$categoryId"), headers: {
+      final uri = categoryId != null
+          ? "$_baseUrl/api/v1/student/sequences?category=$categoryId"
+          : "$_baseUrl/api/v1/student/sequences";
+      response = await http.get(Uri.parse(uri), headers: {
         "Content-Type": "application/json",
         "Authorization": "Bearer $token",
       });
