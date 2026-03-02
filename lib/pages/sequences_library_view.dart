@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pantalla_login_ui/core/services/category_service.dart';
 import 'package:pantalla_login_ui/features/library_sequences/ui/library_sequences_view.dart';
+import 'package:pantalla_login_ui/features/list_categories/bloc/list_categories_bloc.dart';
 import 'package:pantalla_login_ui/features/list_categories/ui/list_categories_view.dart';
 
 class SequencesLibrary extends StatelessWidget {
@@ -65,7 +68,12 @@ class SequencesLibrary extends StatelessWidget {
                 ),
                 SizedBox(
                   height: 50,
-                  child: ListCategoriesView(),
+                  child: BlocProvider(
+                    create: (context) => ListCategoriesBloc(
+                      categoryService: CategoryService(),
+                    )..add(const FetchCategoriesEvent()),
+                    child: ListCategoriesView(),
+                  ),
                 ),
               ],
             ),

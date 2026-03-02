@@ -1,17 +1,17 @@
 class LibraryCategoryResponseModel {
-  final int id;
+  final int? id;
   final String name;
   final int sequenceCount;
 
   LibraryCategoryResponseModel({
-    required this.id,
+    this.id,
     required this.name,
     required this.sequenceCount,
   });
 
   factory LibraryCategoryResponseModel.fromJson(Map<String, dynamic> json) {
     return LibraryCategoryResponseModel(
-      id: json['id'] as int,
+      id: json['id'] as int?,
       name: json['name'] as String,
       sequenceCount: json['sequenceCount'] as int,
     );
@@ -51,5 +51,5 @@ class LibraryCategoryResponseModel {
           sequenceCount == other.sequenceCount;
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ sequenceCount.hashCode;
+  int get hashCode => (id?.hashCode ?? 0) ^ name.hashCode ^ sequenceCount.hashCode;
 }
