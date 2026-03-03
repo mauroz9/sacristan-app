@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pantalla_login_ui/core/services/user_service.dart';
+import 'package:pantalla_login_ui/features/profile_info/bloc/profile_info_bloc.dart';
 import 'package:pantalla_login_ui/features/profile_info/ui/profile_info.dart';
+import 'package:pantalla_login_ui/features/techer_info/bloc/teacher_info_bloc.dart';
 import 'package:pantalla_login_ui/features/techer_info/ui/teacher_info.dart';
 import 'package:pantalla_login_ui/features/student_punctuation/ui/student_punctuation.dart';
 
@@ -21,7 +25,14 @@ class ProfileView extends StatelessWidget {
               ),
             ),
           ),
-          child: SafeArea(minimum: EdgeInsets.only(top: 70), child: ProfileInfo()),
+          child: SafeArea(
+            minimum: EdgeInsets.only(top: 70),
+            child: BlocProvider(
+              create: (context) =>
+                  ProfileInfoBloc(UserService())..add(ProfileInfoRequested()),
+              child: ProfileInfo(),
+            ),
+          ),
         ),
         Expanded(
           child: Padding(
@@ -29,7 +40,15 @@ class ProfileView extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: [StudentPunctuation(), TeacherInfo()],
+              children: [
+                StudentPunctuation(),
+                BlocProvider(
+                  create: (context) =>
+                      TeacherInfoBloc(UserService())
+                        ..add(TeacherInfoRequested()),
+                  child: TeacherInfo(),
+                ),
+              ],
             ),
           ),
         ),
