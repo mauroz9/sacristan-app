@@ -43,6 +43,7 @@ class LibrarySequencesView extends StatelessWidget {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 16.0),
                   child: LibrarySequenceCard(
+                    sequenceId: sequence.id,
                     title: sequence.title,
                     description: sequence.description,
                     category: sequence.category,
