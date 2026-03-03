@@ -72,6 +72,7 @@ class _SequencesToDoState extends State<SequencesToDo> {
                       : "Ahora";
 
               return SequenceCard(
+                id: sequence.id,
                 title: sequence.name,
                 time: sequence.startTime,
                 idImagen: sequence.frontImageId.toString(),

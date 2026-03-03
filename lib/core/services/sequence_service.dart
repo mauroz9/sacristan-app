@@ -49,8 +49,8 @@ class SequenceService implements ISequenceService {
     final token = await TokenStorage().getToken();
 
     try {
-
       var uri = "$_baseUrl/api/v1/student/sequences/$sequenceId";
+      print("URI: $uri");
 
       response = await http.get(Uri.parse(uri), headers: {
         "Content-Type": "application/json",
