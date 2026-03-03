@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:pantalla_login_ui/core/interfaces/user_interface.dart';
 import 'package:pantalla_login_ui/core/models/student_response_model.dart';
 import 'package:pantalla_login_ui/core/models/teacher_response_model.dart';
-import 'package:pantalla_login_ui/core/services/token_storage_service.dart';
+import 'package:pantalla_login_ui/core/others/token_storage.dart';
 
 class UserException implements Exception {
   final String message;
