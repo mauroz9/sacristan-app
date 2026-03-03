@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:pantalla_login_ui/core/interfaces/user_interface.dart';
 import 'package:pantalla_login_ui/core/models/student_response_model.dart';
 import 'package:pantalla_login_ui/core/models/teacher_response_model.dart';
-import 'package:pantalla_login_ui/core/services/token_storage_service.dart';
+import 'package:pantalla_login_ui/core/others/token_storage.dart';
 
 class UserException implements Exception {
   final String message;
@@ -25,7 +25,7 @@ class UserService implements IUserService {
 
     try {
       response = await http.get(
-        Uri.parse("$_baseUrl/api/v1/student/user/profile"),
+        Uri.parse("$_baseUrl/api/v1/student/user/teacher"),
         headers: {
           "Content-Type": "application/json",
           "Authorization": "Bearer $token",
@@ -66,7 +66,7 @@ class UserService implements IUserService {
 
     try {
       response = await http.get(
-        Uri.parse("$_baseUrl/api/v1/student/user/teacher"),
+        Uri.parse("$_baseUrl/api/v1/student/user/profile"),
         headers: {
           "Content-Type": "application/json",
           "Authorization": "Bearer $token",
