@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pantalla_login_ui/core/services/sequence_service.dart';
+import 'package:pantalla_login_ui/features/play_sequence/ui/bloc/play_sequence_bloc.dart';
+import 'package:pantalla_login_ui/features/play_sequence/ui/bloc/play_sequence_event.dart';
+import 'package:pantalla_login_ui/pages/play_sequence_view.dart';
 
 class LibrarySequenceCard extends StatelessWidget {
-  const LibrarySequenceCard({super.key, required this.title, required this.description, required this.category, required this.steps});
+  const LibrarySequenceCard({super.key, required this.sequenceId, required this.title, required this.description, required this.category, required this.steps});
 
+  final int sequenceId;
   final String title;
   final String description;
   final String category;
@@ -74,7 +80,18 @@ class LibrarySequenceCard extends StatelessWidget {
               ],
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BlocProvider(
+                      create: (context) => PlaySequenceBloc(SequenceService())
+                        ..add(FetchSequenceDetails(sequenceId)),
+                      child: const PlaySequenceView(),
+                    ),
+                  ),
+                );
+              },
               style: ButtonStyle(
                 backgroundColor: WidgetStatePropertyAll(
                   const Color(0xFF1F3C8B),

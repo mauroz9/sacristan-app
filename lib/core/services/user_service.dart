@@ -25,7 +25,7 @@ class UserService implements IUserService {
 
     try {
       response = await http.get(
-        Uri.parse("$_baseUrl/api/v1/student/user/profile"),
+        Uri.parse("$_baseUrl/api/v1/student/user/teacher"),
         headers: {
           "Content-Type": "application/json",
           "Authorization": "Bearer $token",
@@ -66,7 +66,7 @@ class UserService implements IUserService {
 
     try {
       response = await http.get(
-        Uri.parse("$_baseUrl/api/v1/student/user/teacher"),
+        Uri.parse("$_baseUrl/api/v1/student/user/profile"),
         headers: {
           "Content-Type": "application/json",
           "Authorization": "Bearer $token",
