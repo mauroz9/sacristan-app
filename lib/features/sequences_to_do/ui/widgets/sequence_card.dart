@@ -6,13 +6,17 @@ class SequenceCard extends StatelessWidget {
       super.key,
       required this.title,
       required this.time,
-      required this.idImagen
+      required this.idImagen,
+      required this.timeLabel,
+      required this.timeColor
       }
     );
 
   final String title;
   final String time;
   final String idImagen;
+  final String timeLabel;
+  final Color timeColor;
 
   @override
   Widget build(BuildContext context) {
@@ -64,10 +68,10 @@ class SequenceCard extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        "Ahora",
+                        timeLabel,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: const Color(0xFF1F3C8B),
+                          color: timeColor,
                           fontSize: 20,
                         ),
                       ),
