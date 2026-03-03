@@ -1,18 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pantalla_login_ui/core/services/sequence_service.dart';
+import 'package:pantalla_login_ui/features/play_sequence/ui/bloc/play_sequence_bloc.dart';
+import 'package:pantalla_login_ui/features/play_sequence/ui/bloc/play_sequence_event.dart';
+import 'package:pantalla_login_ui/pages/play_sequence_view.dart';
 
 class SequenceCard extends StatelessWidget {
   const SequenceCard(
     {
       super.key,
+      required this.id,
       required this.title,
       required this.time,
-      required this.idImagen
+      required this.idImagen,
+      required this.timeLabel,
+      required this.timeColor
       }
     );
 
+  final int id;
   final String title;
   final String time;
   final String idImagen;
+  final String timeLabel;
+  final Color timeColor;
 
   @override
   Widget build(BuildContext context) {
@@ -64,10 +75,10 @@ class SequenceCard extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        "Ahora",
+                        timeLabel,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: const Color(0xFF1F3C8B),
+                          color: timeColor,
                           fontSize: 20,
                         ),
                       ),
@@ -101,7 +112,18 @@ class SequenceCard extends StatelessWidget {
             Expanded(
               flex: 1,
               child: ElevatedButton(
-              onPressed: () {Navigator.pushNamed(context, '/play');},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BlocProvider(
+                      create: (context) => PlaySequenceBloc(SequenceService())
+                        ..add(FetchSequenceDetails(id)),
+                      child: const PlaySequenceView(),
+                    ),
+                  ),
+                );
+              },
               style: ButtonStyle(
                 backgroundColor: WidgetStatePropertyAll(
                   const Color(0xFF1F3C8B),

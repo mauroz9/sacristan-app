@@ -44,7 +44,7 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
           return Center(
             child: Text(
               'Error: ${state.message}',
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
             ),
           );
         } else if (state is PlaySequenceLoaded) {
@@ -262,7 +262,7 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
           return Center(
             child: Text(
               "Información no cargada",
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
             ),
           );
         }
