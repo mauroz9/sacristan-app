@@ -36,235 +36,237 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: BlocBuilder<PlaySequenceBloc, PlaySequenceState>(
-        builder: (context, state) {
-          if (state is PlaySequenceLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is PlaySequenceError) {
-            return Center(
-              child: Text(
-                'Error: ${state.message}',
-                style: TextStyle(color: Colors.white),
+    return BlocBuilder<PlaySequenceBloc, PlaySequenceState>(
+      builder: (context, state) {
+        if (state is PlaySequenceLoading) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is PlaySequenceError) {
+          return Center(
+            child: Text(
+              'Error: ${state.message}',
+              style: TextStyle(color: Colors.white),
+            ),
+          );
+        } else if (state is PlaySequenceLoaded) {
+          final sequence = state.sequence;
+          final steps = sequence.steps;
+
+          if (steps.isEmpty) {
+            return const Center(child: Text("Esta secuencia no tiene pasos"));
+          }
+
+          return Column(
+            spacing: 10,
+            children: [
+              Container(
+                height: 205,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1F3C8B),
+                  border: BoxBorder.fromLTRB(
+                    bottom: BorderSide(
+                      width: 7,
+                      color: const Color.fromARGB(255, 240, 200, 56),
+                    ),
+                  ),
+                ),
+                child: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      top: 10,
+                      right: 15,
+                      left: 15,
+                      bottom: 0,
+                    ),
+                    child: HeaderInfo(
+                      totalSteps: steps.length,
+                      currentStep: _currentStep + 1,
+                      title: sequence.title,
+                    ),
+                  ),
+                ),
               ),
-            );
-          } else if (state is PlaySequenceLoaded) {
-            final sequence = state.sequence;
-            final steps = sequence.steps;
-      
-            if (steps.isEmpty) {
-              return const Center(child: Text("Esta secuencia no tiene pasos"));
-            }
-      
-            return Column(
-              spacing: 10,
-              children: [
-                Container(
-                  height: 205,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF1F3C8B),
-                    border: BoxBorder.fromLTRB(
-                      bottom: BorderSide(
-                        width: 7,
-                        color: const Color.fromARGB(255, 240, 200, 56),
+              Expanded(
+                child: Column(
+                  children: [
+                    Expanded(
+                      flex: 7,
+                      child: StepCard(
+                        stepPosition: _currentStep + 1,
+                        imageId: steps[_currentStep].arasaacPictogramId
+                            .toString(),
+                        stepName: steps[_currentStep].name,
                       ),
                     ),
-                  ),
-                  child: SafeArea(
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        top: 10,
-                        right: 15,
-                        left: 15,
-                        bottom: 0,
-                      ),
-                      child: HeaderInfo(
-                        totalSteps: steps.length,
-                        currentStep: _currentStep + 1,
-                        title: sequence.title,
+                    SizedBox(
+                      height: 90,
+                      child: PageView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        controller: _pageController,
+                        itemCount: steps.length,
+                        itemBuilder: (context, index) {
+                          int relativePostion = index - _currentStep;
+                          double scale = (1 - (relativePostion.abs() * 0.2))
+                              .clamp(0.8, 1.0);
+                          double opacity = 1;
+
+                          if (relativePostion < -0.5) {
+                            opacity = 0.4;
+                          } else if (relativePostion <= 0.5) {
+                            opacity = 1;
+                          }
+
+                          return Center(
+                            child: StepSquare(
+                              stepPosition: index + 1,
+                              imageId: steps[index].arasaacPictogramId
+                                  .toString(),
+                              scale: scale,
+                              opacity: opacity,
+                            ),
+                          );
+                        },
                       ),
                     ),
-                  ),
+                  ],
                 ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Expanded(
-                        flex: 7,
-                        child: StepCard(
-                          stepPosition: _currentStep + 1,
-                          imageId: steps[_currentStep].arasaacPictogramId
-                              .toString(),
-                          stepName: steps[_currentStep].name,
+              ),
+
+              Container(
+                color: Colors.white,
+                height: 110,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Container(
+                      height: 60,
+                      width: 170,
+                      decoration: BoxDecoration(
+                        color: _currentStep == 0
+                            ? const Color(0xFFFFFFFF)
+                            : const Color(0xFF1F3C8B),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: const Color(0xFFD1D5DC),
+                          width: 2,
                         ),
                       ),
-                      SizedBox(
-                        height: 90,
-                        child: PageView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          controller: _pageController,
-                          itemCount: steps.length,
-                          itemBuilder: (context, index) {
-                            int relativePostion = index - _currentStep;
-                            double scale = (1 - (relativePostion.abs() * 0.2))
-                                .clamp(0.8, 1.0);
-                            double opacity = 1;
-      
-                            if (relativePostion < -0.5) {
-                              opacity = 0.4;
-                            } else if (relativePostion <= 0.5) {
-                              opacity = 1;
-                            }
-      
-                            return Center(
-                              child: StepSquare(
-                                stepPosition: index + 1,
-                                imageId: steps[index].arasaacPictogramId
-                                    .toString(),
-                                scale: scale,
-                                opacity: opacity,
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-      
-                Container(
-                  color: Colors.white,
-                  height: 110,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                        height: 60,
-                        width: 170,
-                        decoration: BoxDecoration(
-                          color: _currentStep == 0
-                              ? const Color(0xFFFFFFFF)
-                              : const Color(0xFF1F3C8B),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: const Color(0xFFD1D5DC),
-                            width: 2,
+                      child: ElevatedButton(
+                        onPressed: _currentStep == 0
+                            ? null
+                            : () {
+                                if (_currentStep > 0) {
+                                  _pageController.previousPage(
+                                    duration: Duration(milliseconds: 300),
+                                    curve: Curves.easeInOut,
+                                  );
+                                }
+                              },
+                        style: ButtonStyle(
+                          backgroundColor: WidgetStatePropertyAll(
+                            Colors.transparent,
+                          ),
+                          shadowColor: WidgetStatePropertyAll(
+                            Colors.transparent,
                           ),
                         ),
-                        child: ElevatedButton(
-                          onPressed: _currentStep == 0
-                              ? null
-                              : () {
-                                  if (_currentStep > 0) {
-                                    _pageController.previousPage(
-                                      duration: Duration(milliseconds: 300),
-                                      curve: Curves.easeInOut,
-                                    );
-                                  }
-                                },
-                          style: ButtonStyle(
-                            backgroundColor: WidgetStatePropertyAll(
-                              Colors.transparent,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.arrow_back_ios,
+                              color: _currentStep == 0
+                                  ? Color.fromARGB(255, 140, 156, 180)
+                                  : Colors.white,
+                              size: 18,
+                              fontWeight: FontWeight.bold,
                             ),
-                            shadowColor: WidgetStatePropertyAll(
-                              Colors.transparent,
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.arrow_back_ios,
+                            SizedBox(width: 5),
+                            Text(
+                              "Anterior",
+                              style: TextStyle(
                                 color: _currentStep == 0
                                     ? Color.fromARGB(255, 140, 156, 180)
                                     : Colors.white,
-                                size: 18,
+                                fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
-                              SizedBox(width: 5),
-                              Text(
-                                "Anterior",
-                                style: TextStyle(
-                                  color: _currentStep == 0
-                                      ? Color.fromARGB(255, 140, 156, 180)
-                                      : Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
-                      Container(
-                        height: 60,
-                        width: 170,
-                        decoration: BoxDecoration(
-                          color: _currentStep == steps.length - 1
-                              ? const Color(0xFFFFFFFF)
-                              : const Color(0xFF1F3C8B),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: const Color(0xFFD1D5DC),
-                            width: 2,
+                    ),
+                    Container(
+                      height: 60,
+                      width: 170,
+                      decoration: BoxDecoration(
+                        color: _currentStep == steps.length - 1
+                            ? const Color(0xFFFFFFFF)
+                            : const Color(0xFF1F3C8B),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: const Color(0xFFD1D5DC),
+                          width: 2,
+                        ),
+                      ),
+                      child: ElevatedButton(
+                        onPressed: _currentStep == steps.length - 1
+                            ? null
+                            : () {
+                                if (_currentStep < steps.length - 1) {
+                                  _pageController.nextPage(
+                                    duration: Duration(milliseconds: 300),
+                                    curve: Curves.easeInOut,
+                                  );
+                                }
+                              },
+                        style: ButtonStyle(
+                          backgroundColor: WidgetStatePropertyAll(
+                            Colors.transparent,
+                          ),
+                          shadowColor: WidgetStatePropertyAll(
+                            Colors.transparent,
                           ),
                         ),
-                        child: ElevatedButton(
-                          onPressed: _currentStep == steps.length - 1
-                              ? null
-                              : () {
-                                  if (_currentStep < steps.length - 1) {
-                                    _pageController.nextPage(
-                                      duration: Duration(milliseconds: 300),
-                                      curve: Curves.easeInOut,
-                                    );
-                                  }
-                                },
-                          style: ButtonStyle(
-                            backgroundColor: WidgetStatePropertyAll(
-                              Colors.transparent,
-                            ),
-                            shadowColor: WidgetStatePropertyAll(
-                              Colors.transparent,
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Siguiente",
-                                style: TextStyle(
-                                  color: _currentStep == steps.length - 1
-                                      ? Color.fromARGB(255, 140, 156, 180)
-                                      : Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(width: 5),
-                              Icon(
-                                Icons.arrow_forward_ios,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Siguiente",
+                              style: TextStyle(
                                 color: _currentStep == steps.length - 1
                                     ? Color.fromARGB(255, 140, 156, 180)
                                     : Colors.white,
-                                size: 18,
+                                fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
-                            ],
-                          ),
+                            ),
+                            SizedBox(width: 5),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              color: _currentStep == steps.length - 1
+                                  ? Color.fromARGB(255, 140, 156, 180)
+                                  : Colors.white,
+                              size: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            );
-          }else{
-            return Center(child: Text("Información no cargada", style: TextStyle(color: Colors.white),),);
-          }
-        },
-      ),
+              ),
+            ],
+          );
+        } else {
+          return Center(
+            child: Text(
+              "Información no cargada",
+              style: TextStyle(color: Colors.white),
+            ),
+          );
+        }
+      },
     );
   }
 }
