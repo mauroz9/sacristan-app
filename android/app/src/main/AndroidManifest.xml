@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="pantalla_login_ui"
+        android:label="secuencias sacristan"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

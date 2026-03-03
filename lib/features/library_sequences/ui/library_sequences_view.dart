@@ -1,51 +1,87 @@
 import 'package:flutter/material.dart';
-import 'personalized_widget/library_sequence_card.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pantalla_login_ui/features/library_sequences/bloc/sequence_library_bloc.dart';
+import 'widgets/library_sequence_card.dart';
 
-class LibrarySequencesView extends StatefulWidget {
+class LibrarySequencesView extends StatelessWidget {
   const LibrarySequencesView({super.key});
 
   @override
-  State<LibrarySequencesView> createState() => _LibrarySequencesViewState();
-}
-
-class _LibrarySequencesViewState extends State<LibrarySequencesView> {
-  // Lista de ejemplo de secuencias
-  final List<Map<String, dynamic>> sequences = [
-    {
-      'title': 'Misa Dominical',
-      'description': 'Secuencia completa para la celebración de la misa dominical',
-      'category': 'Misa',
-      'steps': 12,
-    },
-    {
-      'title': 'Bautismo',
-      'description': 'Pasos para la preparación y celebración del sacramento del bautismo',
-      'category': 'Sacramento',
-      'steps': 8,
-    },
-    {
-      'title': 'Comunión',
-      'description': 'Secuencia para la primera comunión de los niños',
-      'category': 'Sacramento',
-      'steps': 10,
-    },
-  ];
-
-  @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-      itemCount: sequences.length,
-      itemBuilder: (context, index) {
-        final sequence = sequences[index];
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 16.0),
-          child: LibrarySequenceCard(
-            title: sequence['title'],
-            description: sequence['description'],
-            category: sequence['category'],
-            steps: sequence['steps'],
-          ),
+    return BlocBuilder<SequenceLibraryBloc, SequenceLibraryState>(
+      builder: (context, state) {
+        if (state is SequenceLibraryLoading) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (state is SequenceLibrarySuccess) {
+          if (state.sequences.isEmpty) {
+            return RefreshIndicator(
+              onRefresh: () async {
+                context.read<SequenceLibraryBloc>().add(FetchSequences());
+                await Future.delayed(const Duration(milliseconds: 500));
+              },
+              child: ListView(
+                children: const [
+                  SizedBox(height: 100),
+                  Center(child: Text('No hay secuencias disponibles')),
+                ],
+              ),
+            );
+          }
+
+          return RefreshIndicator(
+            onRefresh: () async {
+              context.read<SequenceLibraryBloc>().add(FetchSequences());
+              await Future.delayed(const Duration(milliseconds: 500));
+            },
+            child: ListView.builder(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+              itemCount: state.sequences.length,
+              itemBuilder: (context, index) {
+                final sequence = state.sequences[index];
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: LibrarySequenceCard(
+                    title: sequence.title,
+                    description: sequence.description,
+                    category: sequence.category,
+                    steps: sequence.steps,
+                  ),
+                );
+              },
+            ),
+          );
+        } else if (state is SequenceLibraryError) {
+          return RefreshIndicator(
+            onRefresh: () async {
+              context.read<SequenceLibraryBloc>().add(FetchSequences());
+              await Future.delayed(const Duration(milliseconds: 500));
+            },
+            child: ListView(
+              children: [
+                const SizedBox(height: 100),
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(state.message),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: () {
+                          context.read<SequenceLibraryBloc>().add(FetchSequences());
+                        },
+                        child: const Text('Reintentar'),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+        return const Center(
+          child: Text('No hay secuencias disponibles'),
         );
       },
     );

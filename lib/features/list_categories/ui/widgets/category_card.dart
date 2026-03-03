@@ -7,17 +7,19 @@ class CategoryCard extends StatelessWidget {
       required this.title,
       required this.count,
       required this.isActive,
+      this.onTap,
       }
     );
 
   final String title;
   final int count;
   final bool isActive;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: onTap,
       style: ButtonStyle(
         backgroundColor: WidgetStatePropertyAll(isActive 
         ? Colors.white 

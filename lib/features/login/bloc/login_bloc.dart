@@ -4,7 +4,7 @@ import 'package:meta/meta.dart';
 import 'package:pantalla_login_ui/core/models/login_request_model.dart';
 import 'package:pantalla_login_ui/core/models/login_response_model.dart';
 import 'package:pantalla_login_ui/core/services/auth_service.dart';
-import 'package:pantalla_login_ui/core/services/token_storage_service.dart';
+import 'package:pantalla_login_ui/core/others/token_storage.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
