@@ -21,3 +21,5 @@ final class EndRoutineSequence extends PlaySequenceEvent {
 
   EndRoutineSequence(this.reproductionId);
 }
+
+final class CompleteSequence extends PlaySequenceEvent {}

@@ -29,6 +29,8 @@ final class PlaySequenceStarted extends PlaySequenceState {
 
 final class PlaySequenceCompleted extends PlaySequenceState {}
 
+final class PlayLibraryCompleted extends PlaySequenceState {}
+
 final class PlaySequenceCompletionError extends PlaySequenceState {
   final String message;
 

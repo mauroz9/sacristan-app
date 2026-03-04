@@ -7,7 +7,6 @@ import 'package:pantalla_login_ui/features/play_sequence/ui/widgets/header_info.
 import 'package:pantalla_login_ui/features/play_sequence/ui/widgets/step_card.dart';
 import 'package:pantalla_login_ui/features/play_sequence/ui/widgets/step_square.dart';
 import 'package:pantalla_login_ui/pages/main_view.dart';
-import 'package:pantalla_login_ui/pages/sequences_to_do_view.dart';
 
 class PlaySequencePage extends StatefulWidget {
   const PlaySequencePage({super.key});
@@ -65,7 +64,14 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Error: ${state.message}')),
           );
-        } 
+        } else if (state is PlayLibraryCompleted) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const MainView(initialIndex: 1,)),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('¡Secuencia de biblioteca completada!')),
+          );
+        }
       },
       child: BlocBuilder<PlaySequenceBloc, PlaySequenceState>(
         builder: (context, state) {
@@ -245,8 +251,9 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
                         child: ElevatedButton(
                           onPressed: _currentStep == steps.length || _reproductionId == null
                               ? () {
-                                print("No se puede completar la secuencia. Reproduction ID: $_reproductionId");
-                                //                                emit(PlaySequenceCompleted());
+                                context.read<PlaySequenceBloc>().add(
+                                  CompleteSequence()
+                                );
                               }
                               : () {
                                 context.read<PlaySequenceBloc>().add(
@@ -341,7 +348,6 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
             ],
           );
           } else {
-            print("Estado no manejado: $state");
             return Center(
               child: Text(
                 "Información no cargada",

@@ -39,5 +39,10 @@ class PlaySequenceBloc extends Bloc<PlaySequenceEvent, PlaySequenceState> {
         emit(PlaySequenceCompletionError(e.toString()));
       }
     });
+
+    on<CompleteSequence> ((event, emit) {
+      emit(PlayLibraryCompleted());
+    });
   }
+
 }
