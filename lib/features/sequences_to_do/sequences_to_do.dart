@@ -78,6 +78,7 @@ class _SequencesToDoState extends State<SequencesToDo> {
                 idImagen: sequence.frontImageId.toString(),
                 timeLabel: timeLabel,
                 timeColor: timeMap[timeLabel]!,
+                routineSequenceId: sequence.routineSequenceId,
               );
             },
           );

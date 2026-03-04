@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pantalla_login_ui/core/services/reproduction_service.dart';
 import 'package:pantalla_login_ui/core/services/sequence_service.dart';
-import 'package:pantalla_login_ui/features/play_sequence/ui/bloc/play_sequence_bloc.dart';
-import 'package:pantalla_login_ui/features/play_sequence/ui/bloc/play_sequence_event.dart';
+import 'package:pantalla_login_ui/features/play_sequence/bloc/play_sequence_bloc.dart';
+import 'package:pantalla_login_ui/features/play_sequence/bloc/play_sequence_event.dart';
 import 'package:pantalla_login_ui/pages/play_sequence_view.dart';
 
 class SequenceCard extends StatelessWidget {
@@ -14,7 +15,8 @@ class SequenceCard extends StatelessWidget {
       required this.time,
       required this.idImagen,
       required this.timeLabel,
-      required this.timeColor
+      required this.timeColor,
+      required this.routineSequenceId
       }
     );
 
@@ -24,6 +26,7 @@ class SequenceCard extends StatelessWidget {
   final String idImagen;
   final String timeLabel;
   final Color timeColor;
+  final int? routineSequenceId;
 
   @override
   Widget build(BuildContext context) {
@@ -117,8 +120,14 @@ class SequenceCard extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => BlocProvider(
-                      create: (context) => PlaySequenceBloc(SequenceService())
-                        ..add(FetchSequenceDetails(id)),
+                      create: (context) {
+                        final bloc = PlaySequenceBloc(SequenceService(), ReproductionService());
+                        bloc.add(FetchSequenceDetails(id));
+                        if (routineSequenceId != null) {
+                          bloc.add(StartRoutineSequence(routineSequenceId!));
+                        }
+                        return bloc;
+                      },
                       child: const PlaySequenceView(),
                     ),
                   ),

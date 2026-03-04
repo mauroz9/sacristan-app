@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pantalla_login_ui/core/services/reproduction_service.dart';
 import 'package:pantalla_login_ui/core/services/sequence_service.dart';
-import 'package:pantalla_login_ui/features/play_sequence/ui/bloc/play_sequence_bloc.dart';
-import 'package:pantalla_login_ui/features/play_sequence/ui/bloc/play_sequence_event.dart';
+import 'package:pantalla_login_ui/features/play_sequence/bloc/play_sequence_bloc.dart';
+import 'package:pantalla_login_ui/features/play_sequence/bloc/play_sequence_event.dart';
 import 'package:pantalla_login_ui/pages/play_sequence_view.dart';
 
 class LibrarySequenceCard extends StatelessWidget {
@@ -85,7 +86,7 @@ class LibrarySequenceCard extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => BlocProvider(
-                      create: (context) => PlaySequenceBloc(SequenceService())
+                      create: (context) => PlaySequenceBloc(SequenceService(), ReproductionService())
                         ..add(FetchSequenceDetails(sequenceId)),
                       child: const PlaySequenceView(),
                     ),
