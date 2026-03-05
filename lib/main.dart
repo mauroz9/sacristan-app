@@ -3,6 +3,7 @@ import 'package:pantalla_login_ui/pages/login_view.dart';
 import 'package:pantalla_login_ui/pages/main_view.dart';
 import 'package:pantalla_login_ui/pages/play_sequence_view.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() {
   runApp(const MyApp());
 }
@@ -14,6 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       title: 'Flutter Demo',
       theme: ThemeData(),
       initialRoute: '/login',

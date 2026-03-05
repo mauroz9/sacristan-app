@@ -1,3 +1,5 @@
+import 'package:pantalla_login_ui/core/others/token_storage.dart';
+
 class ExceptionHandler {
 
   static void handle(int statusCode) {
@@ -10,6 +12,7 @@ class ExceptionHandler {
       case 400:
         throw Exception("Solicitud inválida. Verifica los datos enviados.");
       case 401:
+        TokenStorage.forceLogout();
         throw Exception("No autorizado. Inicia sesión para acceder a este recurso.");
       case 403:
         throw Exception("Prohibido. No tienes permisos para acceder a este recurso.");
