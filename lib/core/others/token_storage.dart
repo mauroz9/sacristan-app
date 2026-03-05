@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:pantalla_login_ui/main.dart';
 
 class TokenStorage {
   final _storage = const FlutterSecureStorage();
@@ -20,11 +22,20 @@ class TokenStorage {
     await _storage.delete(key: _keyToken);
   }
 
-  static final StreamController<void> _logoutController = StreamController.broadcast(); 
+  Future<void> forceLogout() async {
+    await TokenStorage().deleteToken();
+    
+    navigatorKey.currentState?.pushNamedAndRemoveUntil('/login', (route) => false);
 
-  static Stream<void> get onLogout => _logoutController.stream;
-
-  static void triggerLogout() {
-    _logoutController.add(null);
+    final context = navigatorKey.currentContext;
+    if (context != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Tu sesión ha expirado. Vuelve a iniciar sesión.'),
+          backgroundColor: Colors.grey,
+          duration: Duration(seconds: 4),
+        ),
+      );
+    }
   }
 }

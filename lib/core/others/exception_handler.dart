@@ -1,6 +1,8 @@
+import 'package:pantalla_login_ui/core/others/token_storage.dart';
+
 class ExceptionHandler {
 
-  static void handle(int statusCode) {
+  static Future<void> handle(int statusCode) async {
 
     if (statusCode >= 200 && statusCode < 300) {
       return; // Respuesta exitosa, no se lanza ninguna excepción
@@ -10,6 +12,7 @@ class ExceptionHandler {
       case 400:
         throw Exception("Solicitud inválida. Verifica los datos enviados.");
       case 401:
+        await TokenStorage().forceLogout();
         throw Exception("No autorizado. Inicia sesión para acceder a este recurso.");
       case 403:
         throw Exception("Prohibido. No tienes permisos para acceder a este recurso.");
@@ -18,7 +21,7 @@ class ExceptionHandler {
       case 500:
         throw Exception("Error del servidor. Intenta nuevamente más tarde.");
       default:
-        print("Código de estado desconocido: $statusCode");
+        throw Exception("Código de estado desconocido: $statusCode");
     }
 
   }
