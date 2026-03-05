@@ -6,6 +6,7 @@ import 'package:pantalla_login_ui/core/interfaces/user_interface.dart';
 import 'package:pantalla_login_ui/core/models/student_response_model.dart';
 import 'package:pantalla_login_ui/core/models/teacher_response_model.dart';
 import 'package:pantalla_login_ui/core/others/token_storage.dart';
+import 'package:pantalla_login_ui/core/others/exception_handler.dart';
 
 class UserException implements Exception {
   final String message;
@@ -39,19 +40,11 @@ class UserService implements IUserService {
       throw const UserException("Error de conexión inesperado.");
     }
 
+    ExceptionHandler.handle(response.statusCode);
+
     if (response.statusCode == 200) {
       final Map<String, dynamic> body = jsonDecode(response.body);
       return TeacherResponseModel.fromJson(body);
-    } else if (response.statusCode == 401) {
-      throw const UserException(
-        "Error de autenticación",
-      );
-    } else if (response.statusCode == 403) {
-      throw const UserException(
-        "No tienes permisos para acceder a este recurso.",
-      );
-    } else if (response.statusCode == 400) {
-      throw const UserException("Usuario no recibido");
     } else {
       throw UserException(
         "Error del servidor (${response.statusCode}). Intenta más tarde.",
@@ -80,19 +73,11 @@ class UserService implements IUserService {
       throw const UserException("Error de conexión inesperado.");
     }
 
+    ExceptionHandler.handle(response.statusCode);
+
     if (response.statusCode == 200) {
       final Map<String, dynamic> body = jsonDecode(response.body);
       return StudentResponseModel.fromJson(body);
-    } else if (response.statusCode == 401) {
-      throw const UserException(
-        "Error de autenticación",
-      );
-    } else if (response.statusCode == 403) {
-      throw const UserException(
-        "No tienes permisos para acceder a este recurso.",
-      );
-    } else if (response.statusCode == 400) {
-      throw const UserException("Usuario no recibido");
     } else {
       throw UserException(
         "Error del servidor (${response.statusCode}). Intenta más tarde.",
