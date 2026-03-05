@@ -23,7 +23,6 @@ class TokenStorage {
   }
 
   static Future<void> forceLogout() async {
-    // 1. Borramos el token
     await const FlutterSecureStorage().delete(key: 'auth_token');
     
     navigatorKey.currentState?.pushNamedAndRemoveUntil('/login', (route) => false);
