@@ -5,21 +5,28 @@ import 'package:pantalla_login_ui/pages/sequences_to_do_view.dart';
 import 'package:pantalla_login_ui/shared/custom_bottom_navigation_bar_item.dart';
 
 class MainView extends StatefulWidget {
-  const MainView({super.key});
-
+  final int initialIndex; // Add this line
+  const MainView({super.key, this.initialIndex = 0}); // Default to 0
+  
   @override
   State<MainView> createState() => _MainViewState();
 }
 
 class _MainViewState extends State<MainView> {
   
-  int _selectedIndex = 0;
-
+  late int _selectedIndex; // Change to late
+  
   final List<Widget> _pages = [
     const SecuenciasHacerView(),
     const SequencesLibrary(),
     const ProfileView(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.initialIndex;
+  }
 
   @override
   Widget build(BuildContext context) {

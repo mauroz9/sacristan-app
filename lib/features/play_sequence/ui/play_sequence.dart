@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pantalla_login_ui/features/play_sequence/ui/bloc/play_sequence_bloc.dart';
-import 'package:pantalla_login_ui/features/play_sequence/ui/bloc/play_sequence_state.dart';
+import 'package:pantalla_login_ui/features/play_sequence/bloc/play_sequence_bloc.dart';
+import 'package:pantalla_login_ui/features/play_sequence/bloc/play_sequence_event.dart';
+import 'package:pantalla_login_ui/features/play_sequence/bloc/play_sequence_state.dart';
 import 'package:pantalla_login_ui/features/play_sequence/ui/widgets/header_info.dart';
 import 'package:pantalla_login_ui/features/play_sequence/ui/widgets/step_card.dart';
 import 'package:pantalla_login_ui/features/play_sequence/ui/widgets/step_square.dart';
+import 'package:pantalla_login_ui/pages/main_view.dart';
 
 class PlaySequencePage extends StatefulWidget {
   const PlaySequencePage({super.key});
@@ -16,6 +18,7 @@ class PlaySequencePage extends StatefulWidget {
 class _PlaySequencePageState extends State<PlaySequencePage> {
   late PageController _pageController;
   int _currentStep = 0;
+  int? _reproductionId;
 
   @override
   void initState() {
@@ -36,20 +39,58 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PlaySequenceBloc, PlaySequenceState>(
-      builder: (context, state) {
-        if (state is PlaySequenceLoading) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (state is PlaySequenceError) {
-          return Center(
-            child: Text(
-              'Error: ${state.message}',
-              style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
-            ),
+    return BlocListener<PlaySequenceBloc, PlaySequenceState>(
+      listener: (context, state) {
+        if (state is PlaySequenceStarted) {
+          _reproductionId = state.reproductionId;
+        }
+
+        if (state is PlaySequenceLoaded && state.reproductionId != null) {
+          _reproductionId = state.reproductionId;
+        } else if (state is PlaySequenceCompleted) {
+          
+
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const MainView()),
+            );
+          });
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('¡Secuencia completada!')),
           );
-        } else if (state is PlaySequenceLoaded) {
+          Navigator.pop(context);
+        } else if (state is PlaySequenceCompletionError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error: ${state.message}')),
+          );
+        } else if (state is PlayLibraryCompleted) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const MainView(initialIndex: 1,)),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('¡Secuencia de biblioteca completada!')),
+          );
+        }
+      },
+      child: BlocBuilder<PlaySequenceBloc, PlaySequenceState>(
+        builder: (context, state) {
+          if (state is PlaySequenceLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is PlaySequenceError) {
+            return Center(
+              child: Text(
+                'Error: ${state.message}',
+                style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
+              ),
+            );
+          } else if (state is PlaySequenceLoaded) {
           final sequence = state.sequence;
           final steps = sequence.steps;
+          // Update reproductionId if it's now available
+          if (state.reproductionId != null) {
+            _reproductionId = state.reproductionId;
+          }
 
           if (steps.isEmpty) {
             return const Center(child: Text("Esta secuencia no tiene pasos"));
@@ -195,78 +236,127 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
                         ),
                       ),
                     ),
-                    Container(
-                      height: 60,
-                      width: 170,
-                      decoration: BoxDecoration(
-                        color: _currentStep == steps.length - 1
-                            ? const Color(0xFFFFFFFF)
-                            : const Color(0xFF1F3C8B),
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: const Color(0xFFD1D5DC),
-                          width: 2,
+                    if (_currentStep == steps.length - 1)
+                      Container(
+                        height: 60,
+                        width: 170,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF1F3C8B),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: const Color(0xFFD1D5DC),
+                            width: 2,
+                          ),
                         ),
-                      ),
-                      child: ElevatedButton(
-                        onPressed: _currentStep == steps.length - 1
-                            ? null
-                            : () {
-                                if (_currentStep < steps.length - 1) {
-                                  _pageController.nextPage(
-                                    duration: Duration(milliseconds: 300),
-                                    curve: Curves.easeInOut,
-                                  );
-                                }
+                        child: ElevatedButton(
+                          onPressed: _currentStep == steps.length || _reproductionId == null
+                              ? () {
+                                context.read<PlaySequenceBloc>().add(
+                                  CompleteSequence()
+                                );
+                              }
+                              : () {
+                                context.read<PlaySequenceBloc>().add(
+                                  EndRoutineSequence(_reproductionId!),
+                                );
                               },
-                        style: ButtonStyle(
-                          backgroundColor: WidgetStatePropertyAll(
-                            Colors.transparent,
+                          style: ButtonStyle(
+                            backgroundColor: WidgetStatePropertyAll(
+                              Colors.transparent,
+                            ),
+                            shadowColor: WidgetStatePropertyAll(
+                              Colors.transparent,
+                            ),
                           ),
-                          shadowColor: WidgetStatePropertyAll(
-                            Colors.transparent,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Completar",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Siguiente",
-                              style: TextStyle(
+                      )
+                    else
+                      Container(
+                        height: 60,
+                        width: 170,
+                        decoration: BoxDecoration(
+                          color: _currentStep == steps.length - 1
+                              ? const Color(0xFFFFFFFF)
+                              : const Color(0xFF1F3C8B),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: const Color(0xFFD1D5DC),
+                            width: 2,
+                          ),
+                        ),
+                        child: ElevatedButton(
+                          onPressed: _currentStep == steps.length - 1
+                              ? null
+                              : () {
+                                  if (_currentStep < steps.length - 1) {
+                                    _pageController.nextPage(
+                                      duration: Duration(milliseconds: 300),
+                                      curve: Curves.easeInOut,
+                                    );
+                                  }
+                                },
+                          style: ButtonStyle(
+                            backgroundColor: WidgetStatePropertyAll(
+                              Colors.transparent,
+                            ),
+                            shadowColor: WidgetStatePropertyAll(
+                              Colors.transparent,
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Siguiente",
+                                style: TextStyle(
+                                  color: _currentStep == steps.length - 1
+                                      ? Color.fromARGB(255, 140, 156, 180)
+                                      : Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Icon(
+                                Icons.arrow_forward_ios,
                                 color: _currentStep == steps.length - 1
                                     ? Color.fromARGB(255, 140, 156, 180)
                                     : Colors.white,
-                                fontSize: 20,
+                                size: 18,
                                 fontWeight: FontWeight.bold,
                               ),
-                            ),
-                            SizedBox(width: 5),
-                            Icon(
-                              Icons.arrow_forward_ios,
-                              color: _currentStep == steps.length - 1
-                                  ? Color.fromARGB(255, 140, 156, 180)
-                                  : Colors.white,
-                              size: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
                   ],
                 ),
               ),
             ],
           );
-        } else {
-          return Center(
-            child: Text(
-              "Información no cargada",
-              style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
-            ),
-          );
-        }
-      },
+          } else {
+            return Center(
+              child: Text(
+                "Información no cargada",
+                style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 }
