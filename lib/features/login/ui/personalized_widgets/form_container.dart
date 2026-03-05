@@ -17,6 +17,8 @@ class _FormContainerState extends State<FormContainer> {
   );
   late String _email;
   late String _password;
+  bool _obscurePassword = true;
+  
   @override
   void dispose() {
     super.dispose();
@@ -129,9 +131,21 @@ class _FormContainerState extends State<FormContainer> {
                           }
                           return null;
                         },
-                        obscureText: true,
+                        obscureText: _obscurePassword,
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.lock_outline_rounded),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscurePassword
+                                  ? Icons.visibility_outlined
+                                  : Icons.visibility_off_outlined,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscurePassword = !_obscurePassword;
+                              });
+                            },
+                          ),
                           focusColor: Color.fromRGBO(31, 60, 139, 1.0),
                           filled: true,
                           fillColor: Colors.grey[200],
