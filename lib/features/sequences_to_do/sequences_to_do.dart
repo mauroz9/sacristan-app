@@ -63,7 +63,7 @@ class _SequencesToDoState extends State<SequencesToDo> {
                 millisecond: 0,
               );
               final now = DateTime.now();
-              timeStamp = timeStamp.subtract( Duration(hours: 1));
+              //timeStamp = timeStamp.subtract( Duration(hours: 1));
 
               final String timeLabel = timeStamp.isBefore(now.subtract(Duration(minutes: 5)))
                   ? "Pendiente"
