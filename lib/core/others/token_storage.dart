@@ -8,7 +8,8 @@ class TokenStorage {
   final _storage = const FlutterSecureStorage();
 
   static const _keyToken = 'auth_token';
-  static const baseUrl = 'http://10.0.2.2:8080';
+  //static const baseUrl = 'http://10.0.2.2:8080';
+  static const baseUrl = 'http://87.222.42.195:8000';
 
   Future<void> saveToken(String token) async {
     await _storage.write(key: _keyToken, value: token);
