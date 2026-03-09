@@ -16,26 +16,15 @@ class LibrarySequencesView extends StatelessWidget {
           );
         } else if (state is SequenceLibrarySuccess) {
           if (state.sequences.isEmpty) {
-            return RefreshIndicator(
-              onRefresh: () async {
-                context.read<SequenceLibraryBloc>().add(FetchSequences());
-                await Future.delayed(const Duration(milliseconds: 500));
-              },
-              child: ListView(
+            return ListView(
                 children: const [
                   SizedBox(height: 100),
                   Center(child: Text('No hay secuencias disponibles')),
                 ],
-              ),
-            );
+              );
           }
 
-          return RefreshIndicator(
-            onRefresh: () async {
-              context.read<SequenceLibraryBloc>().add(FetchSequences());
-              await Future.delayed(const Duration(milliseconds: 500));
-            },
-            child: ListView.builder(
+          return ListView.builder(
               padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
               itemCount: state.sequences.length,
               itemBuilder: (context, index) {
@@ -51,15 +40,9 @@ class LibrarySequencesView extends StatelessWidget {
                   ),
                 );
               },
-            ),
-          );
+            );
         } else if (state is SequenceLibraryError) {
-          return RefreshIndicator(
-            onRefresh: () async {
-              context.read<SequenceLibraryBloc>().add(FetchSequences());
-              await Future.delayed(const Duration(milliseconds: 500));
-            },
-            child: ListView(
+          return ListView(
               children: [
                 const SizedBox(height: 100),
                 Center(
@@ -78,8 +61,7 @@ class LibrarySequencesView extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
-          );
+            );
         }
         return const Center(
           child: Text('No hay secuencias disponibles'),
