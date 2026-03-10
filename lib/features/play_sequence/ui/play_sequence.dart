@@ -57,19 +57,19 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
           });
 
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('¡Secuencia completada!')),
+            const SnackBar(content: Text('¡Secuencia completada!'), backgroundColor: Color.fromRGBO(31, 60, 139, 1.0)),
           );
           Navigator.pop(context);
         } else if (state is PlaySequenceCompletionError) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error: ${state.message}')),
+            SnackBar(content: Text('Error: ${state.message}'), backgroundColor: Color.fromRGBO(31, 60, 139, 1.0)),
           );
         } else if (state is PlayLibraryCompleted) {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => const MainView(initialIndex: 1,)),
           );
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('¡Secuencia de biblioteca completada!')),
+            const SnackBar(content: Text('¡Secuencia de biblioteca completada!'), backgroundColor: Color.fromRGBO(31, 60, 139, 1.0)),
           );
         }
       },
