@@ -8,8 +8,8 @@ class TokenStorage {
   final _storage = const FlutterSecureStorage();
 
   static const _keyToken = 'auth_token';
-  //static const baseUrl = 'http://10.0.2.2:8080';
-  static const baseUrl = 'http://87.222.42.195:8000';
+  static const baseUrl = 'http://10.0.2.2:8080';
+
 
   Future<void> saveToken(String token) async {
     await _storage.write(key: _keyToken, value: token);
@@ -33,7 +33,7 @@ class TokenStorage {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Tu sesión ha expirado. Vuelve a iniciar sesión.'),
-          backgroundColor: Colors.grey,
+          backgroundColor: Color.fromRGBO(31, 60, 139, 1.0),
           duration: Duration(seconds: 4),
         ),
       );

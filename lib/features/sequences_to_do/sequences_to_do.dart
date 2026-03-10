@@ -34,10 +34,7 @@ class _SequencesToDoState extends State<SequencesToDo> {
             return const Center(
               child: Text(
                 "No hay secuencias pendientes",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Color(0xFF1F3C8B),
-                ),
+                style: TextStyle(fontSize: 20, color: Color(0xFF1F3C8B)),
               ),
             );
           }
@@ -63,11 +60,10 @@ class _SequencesToDoState extends State<SequencesToDo> {
                 millisecond: 0,
               );
               final now = DateTime.now();
-              final String timeLabel = timeStamp.isBefore(now.subtract(Duration(minutes: 5)))
+              final String timeLabel =
+                  timeStamp.isBefore(now.subtract(Duration(minutes: 5)))
                   ? "Pendiente"
-                  : timeStamp.isAfter(now.add(Duration(minutes: 5)))
-                      ? "Futuro"
-                      : "Ahora";
+                  : "Ahora";
 
               return SequenceCard(
                 id: sequence.id,

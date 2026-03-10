@@ -35,7 +35,7 @@ class _FormContainerState extends State<FormContainer> {
               Navigator.pop(context);
               ScaffoldMessenger.of(
                 context,
-              ).showSnackBar(SnackBar(content: Text(state.message)));
+              ).showSnackBar(SnackBar(content: Text(state.message), backgroundColor: Color.fromRGBO(31, 60, 139, 1.0)));
             } else if (state is LoginLoading) {
               showDialog(
                 context: context,
