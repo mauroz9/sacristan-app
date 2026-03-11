@@ -8,6 +8,7 @@ class TokenStorage {
   final _storage = const FlutterSecureStorage();
 
   static const _keyToken = 'auth_token';
+  static const _keyRefreshToken = 'refresh_token';
   static const baseUrl = 'http://10.0.2.2:8080';
 
 
@@ -19,12 +20,29 @@ class TokenStorage {
     return await _storage.read(key: _keyToken);
   }
 
+  Future<void> saveRefreshToken(String refreshToken) async {
+    await _storage.write(key: _keyRefreshToken, value: refreshToken);
+  }
+
+  Future<String?> getRefreshToken() async {
+    return await _storage.read(key: _keyRefreshToken);
+  }
+
   Future<void> deleteToken() async {
     await _storage.delete(key: _keyToken);
   }
 
+  Future<void> deleteRefreshToken() async {
+    await _storage.delete(key: _keyRefreshToken);
+  }
+
+  Future<void> deleteAllTokens() async {
+    await _storage.delete(key: _keyToken);
+    await _storage.delete(key: _keyRefreshToken);
+  }
+
   Future<void> forceLogout() async {
-    await TokenStorage().deleteToken();
+    await deleteAllTokens();
     
     navigatorKey.currentState?.pushNamedAndRemoveUntil('/login', (route) => false);
 

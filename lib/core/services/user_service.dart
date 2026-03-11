@@ -7,6 +7,7 @@ import 'package:pantalla_login_ui/core/models/student_response_model.dart';
 import 'package:pantalla_login_ui/core/models/teacher_response_model.dart';
 import 'package:pantalla_login_ui/core/others/token_storage.dart';
 import 'package:pantalla_login_ui/core/others/exception_handler.dart';
+import 'package:pantalla_login_ui/core/others/http_client_wrapper.dart';
 
 class UserException implements Exception {
   final String message;
@@ -18,18 +19,17 @@ class UserException implements Exception {
 
 class UserService implements IUserService {
   final String _baseUrl = TokenStorage.baseUrl;
+  final _httpClient = HttpClientWrapper();
 
   @override
   Future<TeacherResponseModel> getTeacherInfo() async {
     final http.Response response;
-    final token = await TokenStorage().getToken();
 
     try {
-      response = await http.get(
+      response = await _httpClient.get(
         Uri.parse("$_baseUrl/api/v1/student/user/teacher"),
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer $token",
         },
       );
     } on SocketException {
@@ -55,14 +55,12 @@ class UserService implements IUserService {
   @override
   Future<StudentResponseModel> getUserInfo() async {
     final http.Response response;
-    final token = await TokenStorage().getToken();
 
     try {
-      response = await http.get(
+      response = await _httpClient.get(
         Uri.parse("$_baseUrl/api/v1/student/user/profile"),
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer $token",
         },
       );
     } on SocketException {

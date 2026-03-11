@@ -5,6 +5,7 @@ import 'package:pantalla_login_ui/core/interfaces/auth_interface.dart';
 import 'package:pantalla_login_ui/core/models/login_request_model.dart';
 import 'package:pantalla_login_ui/core/models/login_response_model.dart';
 import 'package:pantalla_login_ui/core/others/token_storage.dart';
+import 'package:pantalla_login_ui/core/others/http_client_wrapper.dart';
 
 class AuthException implements Exception {
   final String message;
@@ -16,6 +17,7 @@ class AuthException implements Exception {
 
 class AuthService implements IAuthService {
   final String _baseUrl = TokenStorage.baseUrl;
+  final _httpClient = HttpClientWrapper();
 
   @override
   Future<LoginResponse> login(LoginRequest request) async {
@@ -37,7 +39,13 @@ class AuthService implements IAuthService {
 
     if (response.statusCode == 201) {
       final Map<String, dynamic> body = jsonDecode(response.body);
-      return LoginResponse.fromJson(body);
+      final loginResponse = LoginResponse.fromJson(body);
+      
+      // Save both tokens
+      await TokenStorage().saveToken(loginResponse.token);
+      await TokenStorage().saveRefreshToken(loginResponse.refreshToken);
+      
+      return loginResponse;
     } else if (response.statusCode == 401) {
       throw const AuthException(
         "Credenciales incorrectas. Verifica tu email y contraseña.",
@@ -62,11 +70,10 @@ class AuthService implements IAuthService {
 
     if (token != null) {
       try {
-        final response = await http.post(
+        final response = await _httpClient.post(
           Uri.parse("$_baseUrl/logout"),
           headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer $token",
           },
         );
 
@@ -80,6 +87,6 @@ class AuthService implements IAuthService {
       }
     }
 
-    await storage.deleteToken();
+    await storage.deleteAllTokens();
   }
 }

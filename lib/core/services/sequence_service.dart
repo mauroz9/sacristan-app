@@ -7,24 +7,24 @@ import 'package:http/http.dart' as http;
 import 'package:pantalla_login_ui/core/models/sequence_response_model.dart';
 import 'package:pantalla_login_ui/core/others/exception_handler.dart';
 import 'package:pantalla_login_ui/core/others/token_storage.dart';
+import 'package:pantalla_login_ui/core/others/http_client_wrapper.dart';
 
 class SequenceService implements ISequenceService {
 
     final String _baseUrl = TokenStorage.baseUrl;
+    final _httpClient = HttpClientWrapper();
 
   
   @override
   Future<Page<LibrarySequenceResponseModel>> getSequences([String? categoryId, String? searchQuery]) async {
     final http.Response response;
-    final token = await TokenStorage().getToken();
 
     try {
 
       var uri = "$_baseUrl/api/v1/student/sequences?categoryId=${categoryId ?? ""}&search=${searchQuery ?? ""}";
 
-      response = await http.get(Uri.parse(uri), headers: {
+      response = await _httpClient.get(Uri.parse(uri), headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer $token",
       });
 
       ExceptionHandler.handle(response.statusCode);
@@ -46,14 +46,12 @@ class SequenceService implements ISequenceService {
   @override
   Future<SequenceResponseModel> getSequenceDetails(int sequenceId) async {
     final http.Response response;
-    final token = await TokenStorage().getToken();
 
     try {
       var uri = "$_baseUrl/api/v1/student/sequences/$sequenceId";
 
-      response = await http.get(Uri.parse(uri), headers: {
+      response = await _httpClient.get(Uri.parse(uri), headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer $token",
       });
 
       ExceptionHandler.handle(response.statusCode);
