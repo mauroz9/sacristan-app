@@ -2,19 +2,19 @@ import 'package:pantalla_login_ui/core/interfaces/reproduction_interface.dart';
 import 'package:http/http.dart' as http;
 import 'package:pantalla_login_ui/core/others/exception_handler.dart';
 import 'package:pantalla_login_ui/core/others/token_storage.dart';
+import 'package:pantalla_login_ui/core/others/http_client_wrapper.dart';
 
 class ReproductionService implements ReproductionServiceI {
+  final _httpClient = HttpClientWrapper();
 
   @override
   Future<int> startReproduction(int routineSequenceId) async {
     http.Response response;
-    final token = await TokenStorage().getToken();
 
-    response = await http.post(
+    response = await _httpClient.post(
       Uri.parse("${TokenStorage.baseUrl}/api/v1/student/reproductions/$routineSequenceId"),
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer $token"
       });
     ExceptionHandler.handle(response.statusCode);
 
@@ -29,13 +29,11 @@ class ReproductionService implements ReproductionServiceI {
   @override
   Future<void> endReproduction(int reproductionId) async {
     http.Response response;
-    final token = await TokenStorage().getToken();
 
-    response = await http.put(
+    response = await _httpClient.put(
       Uri.parse("${TokenStorage.baseUrl}/api/v1/student/reproductions/$reproductionId/end"),
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer $token"
       });
 
     ExceptionHandler.handle(response.statusCode);
