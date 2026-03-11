@@ -7,9 +7,8 @@ import 'package:pantalla_login_ui/features/play_sequence/bloc/play_sequence_even
 import 'package:pantalla_login_ui/pages/play_sequence_view.dart';
 
 class LibrarySequenceCard extends StatelessWidget {
-  const LibrarySequenceCard({super.key,required this.index, required this.sequenceId, required this.title, required this.description, required this.category, required this.steps});
+  const LibrarySequenceCard({super.key, required this.sequenceId, required this.title, required this.description, required this.category, required this.steps});
 
-  final int index;
   final int sequenceId;
   final String title;
   final String description;
@@ -38,10 +37,6 @@ class LibrarySequenceCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 10,
           children: [
-            Text(
-              "Secuencia ${index + 1}",
-              style: TextStyle(color: Color(0xFF4A5565), fontSize: 14),
-            ),
             Text(
               title,
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Color(0xFF101828)),

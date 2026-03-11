@@ -79,7 +79,6 @@ class _LibrarySequencesViewState extends State<LibrarySequencesView> {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 16.0),
                   child: LibrarySequenceCard(
-                    index: index,
                     sequenceId: sequence.id,
                     title: sequence.title,
                     description: sequence.description,
