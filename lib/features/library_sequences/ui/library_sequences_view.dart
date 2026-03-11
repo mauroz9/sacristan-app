@@ -3,8 +3,44 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pantalla_login_ui/features/library_sequences/bloc/sequence_library_bloc.dart';
 import 'widgets/library_sequence_card.dart';
 
-class LibrarySequencesView extends StatelessWidget {
+class LibrarySequencesView extends StatefulWidget {
   const LibrarySequencesView({super.key});
+
+  @override
+  State<LibrarySequencesView> createState() => _LibrarySequencesViewState();
+}
+
+class _LibrarySequencesViewState extends State<LibrarySequencesView> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      final state = context.read<SequenceLibraryBloc>().state;
+      if (state is SequenceLibrarySuccess &&
+          !state.isLoadingMore &&
+          state.currentPage < state.totalPages - 1) {
+        context.read<SequenceLibraryBloc>().add(
+          LoadMoreSequences(
+            page: state.currentPage + 1,
+          ),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +61,20 @@ class LibrarySequencesView extends StatelessWidget {
           }
 
           return ListView.builder(
+              controller: _scrollController,
               padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-              itemCount: state.sequences.length,
+              itemCount: state.sequences.length + (state.isLoadingMore ? 1 : 0),
               itemBuilder: (context, index) {
+                // Show loading indicator at the end
+                if (index == state.sequences.length) {
+                  return const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
+
                 final sequence = state.sequences[index];
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 16.0),

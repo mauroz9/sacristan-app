@@ -19,11 +19,46 @@ class SequenceLibraryBloc
         final page = await _sequenceService.getSequences(
           event.categoryId?.toString(),
           event.searchQuery,
+          event.page,
         );
-        emit(SequenceLibrarySuccess(sequences: page.content));
+        emit(SequenceLibrarySuccess(
+          sequences: page.content,
+          currentPage: page.page.number,
+          totalPages: page.page.totalPages,
+          isLoadingMore: false,
+        ));
       } catch (e) {
         emit(SequenceLibraryError(
             message: "Error al cargar las secuencias: $e"));
+      }
+    });
+
+    on<LoadMoreSequences>((event, emit) async {
+      if (state is SequenceLibrarySuccess) {
+        final currentState = state as SequenceLibrarySuccess;
+
+        // Don't load more if we're already at the last page
+        if (currentState.currentPage >= currentState.totalPages - 1) {
+          return;
+        }
+
+        emit(currentState.copyWith(isLoadingMore: true));
+
+        try {
+          final page = await _sequenceService.getSequences(
+            event.categoryId?.toString(),
+            event.searchQuery,
+            event.page,
+          );
+          emit(SequenceLibrarySuccess(
+            sequences: [...currentState.sequences, ...page.content],
+            currentPage: page.page.number,
+            totalPages: page.page.totalPages,
+            isLoadingMore: false,
+          ));
+        } catch (e) {
+          emit(currentState.copyWith(isLoadingMore: false));
+        }
       }
     });
   }
