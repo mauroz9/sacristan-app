@@ -28,27 +28,37 @@ class HeaderInfo extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                title,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25,
-                ),
-              ),
-              IconButton.filled(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.all(
-                    const Color.fromARGB(78, 10, 10, 10),
+              Expanded(
+                flex: 8,
+                child: Text(
+                  title,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
                   ),
                 ),
-                icon: Icon(
-                  Icons.close,
-                  size: 30,
-                  color: Colors.white,
+              ),
+              Expanded(
+                flex: 2,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(32.0, 0, 0, 0),
+                  child: IconButton.filled(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: WidgetStateProperty.all(
+                        const Color.fromARGB(78, 10, 10, 10),
+                      ),
+                    ),
+                    icon: Icon(
+                      Icons.close,
+                      size: 30,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
               ),
             ],
