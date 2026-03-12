@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
@@ -35,6 +37,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       }on AuthException catch (e){
         emit(LoginError(message: e.message));
       }catch (e){
+        if (e is TimeoutException) {
+          emit(LoginError(message: "El servidor no esta dando respuesta. Por favor, intenta nuevamente mas tarde."));
+          return;
+        }
         emit(LoginError(message: "Ocurrio un error inesperado: $e"));
       }
     });
