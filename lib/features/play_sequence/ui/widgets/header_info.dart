@@ -5,12 +5,14 @@ class HeaderInfo extends StatelessWidget {
   final int totalSteps;
   final int currentStep;
   final String title;
+  final VoidCallback? onExitPressed;
 
   const HeaderInfo({
     super.key,
     required this.totalSteps,
     required this.currentStep,
     this.title = "Lavado de Manos",
+    this.onExitPressed,
   });
 
   @override
@@ -46,6 +48,7 @@ class HeaderInfo extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(32.0, 0, 0, 0),
                   child: IconButton.filled(
                     onPressed: () {
+                      onExitPressed?.call();
                       Navigator.pop(context);
                     },
                     style: ButtonStyle(

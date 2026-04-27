@@ -33,7 +33,7 @@ class PlaySequenceBloc extends Bloc<PlaySequenceEvent, PlaySequenceState> {
 
     on<EndRoutineSequence>((event, emit) async {
       try {
-        await reproductionService.endReproduction(event.reproductionId);
+        await reproductionService.endReproduction(event.reproductionStats);
         emit(PlaySequenceCompleted());
       } catch (e) {
         emit(PlaySequenceCompletionError(e.toString()));
