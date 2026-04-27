@@ -49,7 +49,6 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
         
         setState(() {
           _currentStep = _pageController.page!.toInt();
-          _stepViewCount[_currentStep] = (_stepViewCount[_currentStep] ?? 0) + 1;
           _stepStartTime = DateTime.now();
         });
       });
@@ -77,7 +76,7 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
 
   
   void _countStep() {
-    print("Contando paso $_currentStep, vista actual: ${_stepViewCount[_currentStep] ?? 0}");
+    print("Contando paso $_currentStep, vista actual: ${_stepViewCount[_currentStep] ?? 1}");
     _stepViewCount[_currentStep] = (_stepViewCount[_currentStep] ?? 0) + 1;
   }
 
@@ -194,11 +193,15 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
                       title: sequence.title,
                       onExitPressed: () {
                         _exitButtonClicks++;
-                        final stats = _createReproductionStats();
-                        _printReproductionData();
-                        context.read<PlaySequenceBloc>().add(
-                          EndRoutineSequence(stats),
-                        );
+                        if (_reproductionId != null) {
+                          final stats = _createReproductionStats();
+                          _printReproductionData();
+                          context.read<PlaySequenceBloc>().add(
+                            EndRoutineSequence(stats),
+                          );
+                        } else {
+                          Navigator.pop(context);
+                        }
                       },
                     ),
                   ),
@@ -329,23 +332,20 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
                           ),
                         ),
                         child: ElevatedButton(
-                          onPressed: _currentStep == steps.length || _reproductionId == null
-                              ? () {
-                                _completeButtonClicks++;
-                                final stats = _createReproductionStats();
-                                _printReproductionData();
-                                context.read<PlaySequenceBloc>().add(
-                                  EndRoutineSequence(stats),
-                                );
-                              }
-                              : () {
-                                _completeButtonClicks++;
-                                final stats = _createReproductionStats();
-                                _printReproductionData();
-                                context.read<PlaySequenceBloc>().add(
-                                  EndRoutineSequence(stats),
-                                );
-                              },
+                          onPressed: () {
+                            _completeButtonClicks++;
+                            if (_reproductionId != null) {
+                              final stats = _createReproductionStats();
+                              _printReproductionData();
+                              context.read<PlaySequenceBloc>().add(
+                                EndRoutineSequence(stats),
+                              );
+                            } else {
+                              context.read<PlaySequenceBloc>().add(
+                                CompleteSequence(),
+                              );
+                            }
+                          },
                           style: ButtonStyle(
                             backgroundColor: WidgetStatePropertyAll(
                               Colors.transparent,
