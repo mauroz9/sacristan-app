@@ -40,7 +40,7 @@ class AuthService implements IAuthService {
     if (response.statusCode == 201) {
       final Map<String, dynamic> body = jsonDecode(response.body);
       final loginResponse = LoginResponse.fromJson(body);
-      
+
       // Save both tokens
       await TokenStorage().saveToken(loginResponse.token);
       await TokenStorage().saveRefreshToken(loginResponse.refreshToken);

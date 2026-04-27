@@ -28,6 +28,7 @@ class RoutinesService implements IRoutinesService {
         final Map<String, dynamic> body = jsonDecode(response.body) as Map<String, dynamic>;
         return Page.fromJson(body, (item) => PrincipalSequenceResponseModel.fromJson(item as Map<String, dynamic>));
       } else {
+        print("Status Code: ${response.statusCode}");
         throw Exception("Error desconocido al obtener las secuencias pendientes.");
       }
 
