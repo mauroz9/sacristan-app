@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:pantalla_login_ui/core/models/sequence_reproduction_stats.dart';
 
 @immutable
 sealed class PlaySequenceEvent {}
@@ -17,9 +18,9 @@ final class StartRoutineSequence extends PlaySequenceEvent {
 }
 
 final class EndRoutineSequence extends PlaySequenceEvent {
-  final int reproductionId;
+  final SequenceReproductionStats reproductionStats;
 
-  EndRoutineSequence(this.reproductionId);
+  EndRoutineSequence(this.reproductionStats);
 }
 
 final class CompleteSequence extends PlaySequenceEvent {}

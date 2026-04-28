@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pantalla_login_ui/features/play_sequence/bloc/play_sequence_bloc.dart';
 import 'package:pantalla_login_ui/features/play_sequence/bloc/play_sequence_event.dart';
 import 'package:pantalla_login_ui/features/play_sequence/bloc/play_sequence_state.dart';
+import 'package:pantalla_login_ui/core/models/sequence_reproduction_stats.dart';
 import 'package:pantalla_login_ui/features/play_sequence/ui/widgets/header_info.dart';
 import 'package:pantalla_login_ui/features/play_sequence/ui/widgets/step_card.dart';
 import 'package:pantalla_login_ui/features/play_sequence/ui/widgets/step_square.dart';
@@ -17,24 +18,92 @@ class PlaySequencePage extends StatefulWidget {
 
 class _PlaySequencePageState extends State<PlaySequencePage> {
   late PageController _pageController;
+
+  late Map<int, int> _stepViewCount;
+  late Map<int, Duration> _stepTotalViewTime;
+  
+  late DateTime _stepStartTime;
+  
+  int _previousButtonClicks = 0;
+  int _nextButtonClicks = 0;
+  int _completeButtonClicks = 0;
+  int _exitButtonClicks = 0;
+
   int _currentStep = 0;
   int? _reproductionId;
 
   @override
   void initState() {
     super.initState();
+    _stepViewCount = {};
+    _stepTotalViewTime = {};
+    _stepStartTime = DateTime.now();
+    
     _pageController = PageController(initialPage: 0, viewportFraction: 0.4)
       ..addListener(() {
+        if (_stepViewCount[_currentStep] != null) {
+          final timeSpent = DateTime.now().difference(_stepStartTime);
+          _stepTotalViewTime[_currentStep] = 
+            (_stepTotalViewTime[_currentStep] ?? Duration.zero) + timeSpent;
+        }
+        
         setState(() {
           _currentStep = _pageController.page!.toInt();
+          _stepStartTime = DateTime.now();
         });
       });
   }
 
   @override
   void dispose() {
+    final timeSpent = DateTime.now().difference(_stepStartTime);
+    _stepTotalViewTime[_currentStep] = (_stepTotalViewTime[_currentStep] ?? Duration.zero) + timeSpent;
     _pageController.dispose();
     super.dispose();
+  }
+
+  SequenceReproductionStats _createReproductionStats() {
+    return SequenceReproductionStats(
+      reproductionId: _reproductionId ?? 0,
+      stepViewCount: _stepViewCount,
+      stepTotalViewTime: _stepTotalViewTime,
+      previousButtonClicks: _previousButtonClicks,
+      nextButtonClicks: _nextButtonClicks,
+      completeButtonClicks: _completeButtonClicks,
+      exitButtonClicks: _exitButtonClicks,
+    );
+  }
+
+  
+  void _countStep() {
+    print("Contando paso $_currentStep, vista actual: ${_stepViewCount[_currentStep] ?? 1}");
+    _stepViewCount[_currentStep] = (_stepViewCount[_currentStep] ?? 0) + 1;
+  }
+
+  void _printReproductionData() {
+    final stats = _createReproductionStats();
+    print('\n========== DATOS DE REPRODUCCIÓN ==========');
+    print('ID de reproducción: ${stats.reproductionId}');
+    print('\n--- VISUALIZACIONES POR PASO ---');
+    stats.stepViewCount.forEach((stepIndex, viewCount) {
+      print('Paso ${stepIndex + 1}: $viewCount veces visto');
+    });
+    
+    print('\n--- TIEMPO POR PASO ---');
+    stats.stepTotalViewTime.forEach((stepIndex, duration) {
+      print('Paso ${stepIndex + 1}: ${duration.inSeconds}s (${duration.inMilliseconds}ms)');
+    });
+    
+    print('\n--- CLICS EN BOTONES ---');
+    print('Botón "Anterior": ${stats.previousButtonClicks} clics');
+    print('Botón "Siguiente": ${stats.nextButtonClicks} clics');
+    print('Botón "Completar": ${stats.completeButtonClicks} clics');
+    print('Botón "Salir": ${stats.exitButtonClicks} clics');
+    
+    print('\n--- RESUMEN ---');
+    print('Total de pasos: ${stats.stepViewCount.length}');
+    print('Total de clicks: ${stats.previousButtonClicks + stats.nextButtonClicks + stats.completeButtonClicks + stats.exitButtonClicks}');
+    print('==========================================\n');
   }
 
   @override
@@ -48,7 +117,7 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
         if (state is PlaySequenceLoaded && state.reproductionId != null) {
           _reproductionId = state.reproductionId;
         } else if (state is PlaySequenceCompleted) {
-          
+          _printReproductionData();
 
           WidgetsBinding.instance.addPostFrameCallback((_) {
             Navigator.of(context).pushReplacement(
@@ -65,6 +134,7 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
             SnackBar(content: Text('Error: ${state.message}'), backgroundColor: Color.fromRGBO(31, 60, 139, 1.0)),
           );
         } else if (state is PlayLibraryCompleted) {
+          _printReproductionData();
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => const MainView(initialIndex: 1,)),
           );
@@ -87,7 +157,6 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
           } else if (state is PlaySequenceLoaded) {
           final sequence = state.sequence;
           final steps = sequence.steps;
-          // Update reproductionId if it's now available
           if (state.reproductionId != null) {
             _reproductionId = state.reproductionId;
           }
@@ -122,6 +191,18 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
                       totalSteps: steps.length,
                       currentStep: _currentStep + 1,
                       title: sequence.title,
+                      onExitPressed: () {
+                        _exitButtonClicks++;
+                        if (_reproductionId != null) {
+                          final stats = _createReproductionStats();
+                          _printReproductionData();
+                          context.read<PlaySequenceBloc>().add(
+                            EndRoutineSequence(stats),
+                          );
+                        } else {
+                          Navigator.pop(context);
+                        }
+                      },
                     ),
                   ),
                 ),
@@ -195,6 +276,8 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
                         onPressed: _currentStep == 0
                             ? null
                             : () {
+                                _previousButtonClicks++;
+                                _countStep();
                                 if (_currentStep > 0) {
                                   _pageController.previousPage(
                                     duration: Duration(milliseconds: 300),
@@ -249,17 +332,20 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
                           ),
                         ),
                         child: ElevatedButton(
-                          onPressed: _currentStep == steps.length || _reproductionId == null
-                              ? () {
-                                context.read<PlaySequenceBloc>().add(
-                                  CompleteSequence()
-                                );
-                              }
-                              : () {
-                                context.read<PlaySequenceBloc>().add(
-                                  EndRoutineSequence(_reproductionId!),
-                                );
-                              },
+                          onPressed: () {
+                            _completeButtonClicks++;
+                            if (_reproductionId != null) {
+                              final stats = _createReproductionStats();
+                              _printReproductionData();
+                              context.read<PlaySequenceBloc>().add(
+                                EndRoutineSequence(stats),
+                              );
+                            } else {
+                              context.read<PlaySequenceBloc>().add(
+                                CompleteSequence(),
+                              );
+                            }
+                          },
                           style: ButtonStyle(
                             backgroundColor: WidgetStatePropertyAll(
                               Colors.transparent,
@@ -301,7 +387,9 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
                           onPressed: _currentStep == steps.length - 1
                               ? null
                               : () {
+                                  _nextButtonClicks++;
                                   if (_currentStep < steps.length - 1) {
+                                    _countStep();
                                     _pageController.nextPage(
                                       duration: Duration(milliseconds: 300),
                                       curve: Curves.easeInOut,
