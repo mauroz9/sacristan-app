@@ -76,36 +76,8 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
 
   
   void _countStep() {
-    print("Contando paso $_currentStep, vista actual: ${_stepViewCount[_currentStep] ?? 1}");
     _stepViewCount[_currentStep] = (_stepViewCount[_currentStep] ?? 0) + 1;
   }
-
-  void _printReproductionData() {
-    final stats = _createReproductionStats();
-    print('\n========== DATOS DE REPRODUCCIÓN ==========');
-    print('ID de reproducción: ${stats.reproductionId}');
-    print('\n--- VISUALIZACIONES POR PASO ---');
-    stats.stepViewCount.forEach((stepIndex, viewCount) {
-      print('Paso ${stepIndex + 1}: $viewCount veces visto');
-    });
-    
-    print('\n--- TIEMPO POR PASO ---');
-    stats.stepTotalViewTime.forEach((stepIndex, duration) {
-      print('Paso ${stepIndex + 1}: ${duration.inSeconds}s (${duration.inMilliseconds}ms)');
-    });
-    
-    print('\n--- CLICS EN BOTONES ---');
-    print('Botón "Anterior": ${stats.previousButtonClicks} clics');
-    print('Botón "Siguiente": ${stats.nextButtonClicks} clics');
-    print('Botón "Completar": ${stats.completeButtonClicks} clics');
-    print('Botón "Salir": ${stats.exitButtonClicks} clics');
-    
-    print('\n--- RESUMEN ---');
-    print('Total de pasos: ${stats.stepViewCount.length}');
-    print('Total de clicks: ${stats.previousButtonClicks + stats.nextButtonClicks + stats.completeButtonClicks + stats.exitButtonClicks}');
-    print('==========================================\n');
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocListener<PlaySequenceBloc, PlaySequenceState>(
@@ -117,7 +89,6 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
         if (state is PlaySequenceLoaded && state.reproductionId != null) {
           _reproductionId = state.reproductionId;
         } else if (state is PlaySequenceCompleted) {
-          _printReproductionData();
 
           WidgetsBinding.instance.addPostFrameCallback((_) {
             Navigator.of(context).pushReplacement(
@@ -134,7 +105,6 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
             SnackBar(content: Text('Error: ${state.message}'), backgroundColor: Color.fromRGBO(31, 60, 139, 1.0)),
           );
         } else if (state is PlayLibraryCompleted) {
-          _printReproductionData();
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => const MainView(initialIndex: 1,)),
           );
@@ -195,7 +165,6 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
                         _exitButtonClicks++;
                         if (_reproductionId != null) {
                           final stats = _createReproductionStats();
-                          _printReproductionData();
                           context.read<PlaySequenceBloc>().add(
                             EndRoutineSequence(stats),
                           );
@@ -226,14 +195,14 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
                         controller: _pageController,
                         itemCount: steps.length,
                         itemBuilder: (context, index) {
-                          int relativePostion = index - _currentStep;
-                          double scale = (1 - (relativePostion.abs() * 0.2))
+                          int relativePosition = index - _currentStep;
+                          double scale = (1 - (relativePosition.abs() * 0.2))
                               .clamp(0.8, 1.0);
                           double opacity = 1;
 
-                          if (relativePostion < -0.5) {
+                          if (relativePosition < -0.5) {
                             opacity = 0.4;
-                          } else if (relativePostion <= 0.5) {
+                          } else if (relativePosition <= 0.5) {
                             opacity = 1;
                           }
 
@@ -336,7 +305,6 @@ class _PlaySequencePageState extends State<PlaySequencePage> {
                             _completeButtonClicks++;
                             if (_reproductionId != null) {
                               final stats = _createReproductionStats();
-                              _printReproductionData();
                               context.read<PlaySequenceBloc>().add(
                                 EndRoutineSequence(stats),
                               );

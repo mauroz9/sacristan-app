@@ -1,156 +1,181 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pantalla_login_ui/features/student_punctuation/bloc/student_punctuation_bloc.dart';
 
-class StudentPunctuation extends StatefulWidget {
+class StudentPunctuation extends StatelessWidget {
   const StudentPunctuation({super.key});
 
   @override
-  State<StudentPunctuation> createState() => _StudentPunctuationState();
-}
-
-class _StudentPunctuationState extends State<StudentPunctuation> {
-  @override
   Widget build(BuildContext context) {
-    return Column(
-      spacing: 20,
-      children: [
-        Row(
+    return BlocBuilder<StudentPunctuationBloc, StudentPunctuationState>(
+      builder: (context, state) {
+        return Column(
+          spacing: 20,
           children: [
-            Icon(
-              Icons.star_border_rounded,
-              size: 35,
-              color: const Color(0xFF1F3C8B),
+            Row(
+              children: [
+                Icon(
+                  Icons.star_border_rounded,
+                  size: 35,
+                  color: const Color(0xFF1F3C8B),
+                ),
+                Text(
+                  "Puntuaciones",
+                  style: TextStyle(
+                    fontSize: 22,
+                    color: const Color(0xFF1F3C8B),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
-            Text(
-              "Puntuaciones",
-              style: TextStyle(
-                fontSize: 22,
-                color: const Color(0xFF1F3C8B),
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            _buildPunctuationContent(state),
           ],
+        );
+      },
+    );
+  }
+
+  Widget _buildPunctuationContent(StudentPunctuationState state) {
+    if (state is StudentPunctuationLoading) {
+      return Center(
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(40),
+            child: CircularProgressIndicator(),
+          ),
         ),
-        Container(
+      );
+    }
+
+    if (state is StudentPunctuationError) {
+      return Center(
+        child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
           ),
           child: Padding(
             padding: const EdgeInsets.all(20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
+            child: Column(
               children: [
-                Column(
-                  spacing: 5,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFDCFCE7),
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Icon(
-                          Icons.check,
-                          size: 40,
-                          color: const Color(0xFF00A63E),
-                        ),
-                      ),
-                    ),
-                    Text(
-                      "67",
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      "Completadas",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: const Color(0xFF4A5565),
-                      ),
-                    ),
-                  ],
+                Icon(
+                  Icons.error_outline,
+                  size: 50,
+                  color: Colors.red,
                 ),
-                Column(
-                  spacing: 5,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFDBEAFE),
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(15),
-                        child: Icon(
-                          Icons.calendar_today_outlined,
-                          size: 30,
-                          color: const Color(0xFF155DFC),
-                        ),
-                      ),
-                    ),
-                    Text(
-                      "67",
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      "Activas",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: const Color(0xFF4A5565),
-                      ),
-                    ),
-                  ],
-                ),
-                Column(
-                  spacing: 5,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFFEDD4),
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Icon(
-                          Icons.auto_graph_outlined,
-                          size: 40,
-                          color: const Color(0xFFF54900),
-                        ),
-                      ),
-                    ),
-                    Text(
-                      "67",
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      "Días racha",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: const Color(0xFF4A5565),
-                      ),
-                    ),
-                  ],
+                SizedBox(height: 10),
+                Text(
+                  state.message,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.red,
+                  ),
                 ),
               ],
             ),
+          ),
+        ),
+      );
+    }
+
+    if (state is StudentPunctuationSuccess) {
+      final response = state.response;
+      
+      return Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              _buildPunctuationCard(
+                icon: Icons.check,
+                iconColor: const Color(0xFF00A63E),
+                bgColor: const Color(0xFFDCFCE7),
+                value: response.completadas.toString(),
+                label: "Completadas",
+              ),
+              _buildPunctuationCard(
+                icon: Icons.calendar_today_outlined,
+                iconColor: const Color(0xFF155DFC),
+                bgColor: const Color(0xFFDBEAFE),
+                value: response.activas.toString(),
+                label: "Activas",
+              ),
+              _buildPunctuationCard(
+                icon: Icons.auto_graph_outlined,
+                iconColor: const Color(0xFFF54900),
+                bgColor: const Color(0xFFFFEDD4),
+                value: response.diasRacha.toString(),
+                label: "Días racha",
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Text("Cargando puntuaciones..."),
+      ),
+    );
+  }
+
+  Widget _buildPunctuationCard({
+    required IconData icon,
+    required Color iconColor,
+    required Color bgColor,
+    required String value,
+    required String label,
+  }) {
+    return Column(
+      spacing: 5,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: bgColor,
+            borderRadius: BorderRadius.circular(50),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Icon(
+              icon,
+              size: 40,
+              color: iconColor,
+            ),
+          ),
+        ),
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF4A5565),
           ),
         ),
       ],
