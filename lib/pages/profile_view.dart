@@ -5,6 +5,7 @@ import 'package:pantalla_login_ui/features/profile_info/bloc/profile_info_bloc.d
 import 'package:pantalla_login_ui/features/profile_info/ui/profile_info.dart';
 import 'package:pantalla_login_ui/features/techer_info/bloc/teacher_info_bloc.dart';
 import 'package:pantalla_login_ui/features/techer_info/ui/teacher_info.dart';
+import 'package:pantalla_login_ui/features/student_punctuation/bloc/student_punctuation_bloc.dart';
 import 'package:pantalla_login_ui/features/student_punctuation/ui/student_punctuation.dart';
 
 class ProfileView extends StatelessWidget {
@@ -41,7 +42,12 @@ class ProfileView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                StudentPunctuation(),
+                BlocProvider(
+                  create: (context) =>
+                      StudentPunctuationBloc(UserService())
+                        ..add(StudentPunctuationRequested()),
+                  child: StudentPunctuation(),
+                ),
                 BlocProvider(
                   create: (context) =>
                       TeacherInfoBloc(UserService())
